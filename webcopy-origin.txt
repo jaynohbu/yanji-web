@@ -1,0 +1,188 @@
+Uri: https://www.yanjirestaurant.com/
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\index.htm
+Content Type: text/html
+
+Uri: https://www.yanjirestaurant.com/img/map.jpg
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\img\map.jpg
+Content Type: image/jpeg
+
+Uri: https://www.yanjirestaurant.com/favicon.ico
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\favicon.ico
+Content Type: image/x-icon
+
+Uri: https://fonts.googleapis.com/css?family=Roboto:100,300,400
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\css.css
+Content Type: text/css
+
+Uri: https://www.yanjirestaurant.com/css/jquery.fullPage.css
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\css\jquery.fullPage.css
+Content Type: text/css
+
+Uri: https://www.yanjirestaurant.com/css/style2.css
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\css\style2.css
+Content Type: text/css
+
+Uri: https://www.yanjirestaurant.com/bookings.php
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\bookings.php.html
+Content Type: text/html
+
+Uri: https://www.yanjirestaurant.com/yanji_menu_2021.pdf
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\yanji_menu_2021.pdf
+Content Type: application/pdf
+
+Uri: https://www.yanjirestaurant.com/newsletter.php
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\newsletter.php.html
+Content Type: text/html
+
+Uri: https://wearememo.com/
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\index-1.htm
+Content Type: text/html
+
+Uri: https://www.yanjirestaurant.com/terms-and-conditions.php
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\terms-and-conditions.php.html
+Content Type: text/html
+
+Uri: https://www.yanjirestaurant.com/privacy-policy.php
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\privacy-policy.php.html
+Content Type: text/html
+
+Uri: https://www.yanjirestaurant.com/cookies.php
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\cookies.php.html
+Content Type: text/html
+
+Uri: https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\ajax\libs\jquery\1.9.1\jquery.min.js
+Content Type: text/javascript
+
+Uri: https://www.yanjirestaurant.com/js/jquery.fullPage.js
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\js\jquery.fullPage.js
+Content Type: application/javascript
+
+Uri: https://www.yanjirestaurant.com/js/easing.js
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\js\easing.js
+Content Type: application/javascript
+
+Uri: https://www.yanjirestaurant.com/js/animation2.js
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\js\animation2.js
+Content Type: application/javascript
+
+Uri: https://www.yanjirestaurant.com/js/animation-b2.js
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\js\animation-b2.js
+Content Type: application/javascript
+
+Uri: https://www.googletagmanager.com/gtag/js?id=UA-149905753-1
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\gtag\js.js
+Content Type: application/javascript
+
+Uri: https://maps.googleapis.com/maps/api/js?key=AIzaSyA9pVCZVeKa1gUEsIvClY8Ajfbf_sfTfu4
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\maps\api\js
+Content Type: text/javascript
+
+Uri: https://consent.cookiebot.com/uc.js
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\uc.js
+Content Type: application/javascript
+
+Uri: https://www.yanjirestaurant.com/img/yanji-logo-main-new.png
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\img\yanji-logo-main-new.png
+Content Type: image/png
+
+Uri: https://www.yanjirestaurant.com/img/yanji-logo-main-w-new.png
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\img\yanji-logo-main-w-new.png
+Content Type: image/png
+
+Uri: https://www.yanjirestaurant.com/img/delivery_deliveroo.png
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\img\delivery_deliveroo.png
+Content Type: image/png
+
+Uri: https://www.yanjirestaurant.com/img/p1.png
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\img\p1.png
+Content Type: image/png
+
+Uri: https://www.yanjirestaurant.com/img/new-bg-6.jpg
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\img\new-bg-6.jpg
+Content Type: image/jpeg
+
+Uri: https://www.yanjirestaurant.com/img/arrow-down.png
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\img\arrow-down.png
+Content Type: image/png
+
+Uri: https://www.yanjirestaurant.com/img/p2.png
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\img\p2.png
+Content Type: image/png
+
+Uri: https://www.yanjirestaurant.com/img/deliveroo.png
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\img\deliveroo.png
+Content Type: image/png
+
+Uri: https://www.yanjirestaurant.com/img/close_orange.svg
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\img\close_orange.svg
+Content Type: image/svg+xml
+
+Uri: https://www.yanjirestaurant.com/img/new-bg-1.jpg
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\img\new-bg-1.jpg
+Content Type: image/jpeg
+
+Uri: https://www.yanjirestaurant.com/img/bg-about.jpg
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\img\bg-about.jpg
+Content Type: image/jpeg
+
+Uri: https://www.yanjirestaurant.com/img/new-bg-4.jpg
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\img\new-bg-4.jpg
+Content Type: image/jpeg
+
+Uri: https://www.yanjirestaurant.com/img/bg-menu.jpg
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\img\bg-menu.jpg
+Content Type: image/jpeg
+
+Uri: https://www.yanjirestaurant.com/img/new-bg-7.jpg
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\img\new-bg-7.jpg
+Content Type: image/jpeg
+
+Uri: https://www.yanjirestaurant.com/img/new-bg-8.jpg
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\img\new-bg-8.jpg
+Content Type: image/jpeg
+
+Uri: https://www.yanjirestaurant.com/img/bg-about3.jpg
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\img\bg-about3.jpg
+Content Type: image/jpeg
+
+Uri: https://www.yanjirestaurant.com/css/select2.css
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\css\select2.css
+Content Type: text/css
+
+Uri: https://www.yanjirestaurant.com/index.php
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\index.php.html
+Content Type: text/html
+
+Uri: https://www.yanjirestaurant.com/js/jquery.easing.1.3.js
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\js\jquery.easing.1.3.js
+Content Type: application/javascript
+
+Uri: https://www.yanjirestaurant.com/js/jquery.validate.min.js
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\js\jquery.validate.min.js
+Content Type: application/javascript
+
+Uri: https://www.yanjirestaurant.com/img/v.png
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\img\v.png
+Content Type: image/png
+
+Uri: https://www.google.it/maps/place/Bethnal+Green+Rd,+London+E2+7DG,+UK/@51.5252698,-0.0730965,17z/data=!3m1!4b1!4m5!3m4!1s0x48761cb7f9dc3ecf:0x5260ac6d16a9424!8m2!3d51.5253212!4d-0.0711852?shorturl=1
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\maps\place\Bethnal Green Rd, London E2 7DG, UK\@51.5252698,-0.0730965,17z\data=!3m1!4b1!4m5!3m4!1s0x48761cb7f9dc3ecf0x5260ac6d16a9424!8m2!3d51.5253212!4d-0.0711852.html
+Content Type: text/html
+
+Uri: https://cdn-images.mailchimp.com/embedcode/classic-10_7.css
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\embedcode\classic-10_7.css
+Content Type: text/css
+
+Uri: https://s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\downloads.mailchimp.com\js\mc-validate.js
+Content Type: application/javascript
+
+Uri: https://consent.cookiebot.com/28f9e127-cb6e-49ff-849d-eee5aaff084f/cd.js
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\28f9e127-cb6e-49ff-849d-eee5aaff084f\cd.js
+Content Type: application/x-javascript
+
+Uri: https://www.monginigraphics.me/
+File Name: C:\Downloaded Web Sites\www.yanjirestaurant.com\index-2.htm
+Content Type: text/html
+

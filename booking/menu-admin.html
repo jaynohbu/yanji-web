@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Management - Admin</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Roboto, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      background: #333;
+      color: #fff;
+      padding: 20px;
+      border-radius: 4px;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      font-size: 28px;
+      font-weight: 300;
+    }
+    .logout-btn {
+      background: #ff4444;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: Roboto, sans-serif;
+    }
+    .logout-btn:hover {
+      background: #cc0000;
+    }
+    .button-group {
+      margin-bottom: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      padding: 10px 20px;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: Roboto, sans-serif;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background: #555;
+    }
+    .btn-secondary {
+      background: #666;
+    }
+    .btn-secondary:hover {
+      background: #888;
+    }
+    .btn-danger {
+      background: #ff4444;
+    }
+    .btn-danger:hover {
+      background: #cc0000;
+    }
+    .section {
+      background: #fff;
+      padding: 20px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      border-left: 4px solid #333;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    .section-header h2 {
+      font-size: 20px;
+      font-weight: 400;
+    }
+    .items-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 15px;
+    }
+    .item-card {
+      background: #f9f9f9;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      transition: box-shadow 0.3s;
+    }
+    .item-card:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .item-name {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 5px;
+      color: #333;
+    }
+    .item-price {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+    .item-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .item-actions button {
+      flex: 1;
+      padding: 8px;
+      font-size: 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .edit-btn {
+      background: #4444ff;
+      color: #fff;
+    }
+    .edit-btn:hover {
+      background: #0000cc;
+    }
+    .delete-btn {
+      background: #ff4444;
+      color: #fff;
+    }
+    .delete-btn:hover {
+      background: #cc0000;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: #333;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: Roboto, sans-serif;
+      font-size: 14px;
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal.active {
+      display: flex;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    .modal-header h2 {
+      font-size: 20px;
+      font-weight: 400;
+    }
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #999;
+    }
+    .close-btn:hover {
+      color: #333;
+    }
+    .lang-inputs {
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 4px;
+      background: #f9f9f9;
+    }
+    .lang-input {
+      margin-bottom: 10px;
+    }
+    .lang-input:last-child {
+      margin-bottom: 0;
+    }
+    .lang-label {
+      display: block;
+      font-weight: 400;
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 3px;
+    }
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #999;
+    }
+    .error {
+      background: #ffebee;
+      color: #c62828;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+    .success {
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Menu Management</h1>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </header>
+
+    <div id="message"></div>
+
+    <div class="button-group">
+      <button class="btn" onclick="openAddSectionModal()">+ Add Section</button>
+      <button class="btn btn-secondary" onclick="loadMenu()">Refresh</button>
+    </div>
+
+    <div id="menu-container" class="loading">Loading menu...</div>
+  </div>
+
+  <!-- Add/Edit Section Modal -->
+  <div id="sectionModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="sectionModalTitle">Add Section</h2>
+        <button class="close-btn" onclick="closeSectionModal()">&times;</button>
+      </div>
+      <form onsubmit="saveSectionModal(event)">
+        <div class="form-group">
+          <label>Icon (emoji)</label>
+          <input type="text" id="sectionIcon" maxlength="2" placeholder="🥢" required>
+        </div>
+        <div class="form-group">
+          <label>Section Names</label>
+          <div class="lang-inputs">
+            <div class="lang-input">
+              <span class="lang-label">English</span>
+              <input type="text" id="sectionNameEn" required>
+            </div>
+            <div class="lang-input">
+              <span class="lang-label">Korean (한국어)</span>
+              <input type="text" id="sectionNameKo">
+            </div>
+            <div class="lang-input">
+              <span class="lang-label">Chinese (中文)</span>
+              <input type="text" id="sectionNameZh">
+            </div>
+          </div>
+        </div>
+        <div class="button-group" style="margin-top: 20px;">
+          <button type="submit" class="btn">Save Section</button>
+          <button type="button" class="btn btn-secondary" onclick="closeSectionModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add/Edit Item Modal -->
+  <div id="itemModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="itemModalTitle">Add Item</h2>
+        <button class="close-btn" onclick="closeItemModal()">&times;</button>
+      </div>
+      <form onsubmit="saveItemModal(event)">
+        <div class="form-group">
+          <label>Item Names</label>
+          <div class="lang-inputs">
+            <div class="lang-input">
+              <span class="lang-label">English</span>
+              <input type="text" id="itemNameEn" required>
+            </div>
+            <div class="lang-input">
+              <span class="lang-label">Korean (한국어)</span>
+              <input type="text" id="itemNameKo">
+            </div>
+            <div class="lang-input">
+              <span class="lang-label">Chinese (中文)</span>
+              <input type="text" id="itemNameZh">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <div class="lang-inputs">
+            <div class="lang-input">
+              <span class="lang-label">English</span>
+              <textarea id="itemDescEn"></textarea>
+            </div>
+            <div class="lang-input">
+              <span class="lang-label">Korean (한국어)</span>
+              <textarea id="itemDescKo"></textarea>
+            </div>
+            <div class="lang-input">
+              <span class="lang-label">Chinese (中文)</span>
+              <textarea id="itemDescZh"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Price (£)</label>
+          <input type="number" id="itemPrice" min="0" step="0.01" required>
+        </div>
+        <div class="button-group" style="margin-top: 20px;">
+          <button type="submit" class="btn">Save Item</button>
+          <button type="button" class="btn btn-secondary" onclick="closeItemModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = window.YANJI_CONFIG?.API_BASE || 'https://yanji.tunesbasis.com';
+    let authToken = localStorage.getItem('authToken');
+    let currentMenu = null;
+    let editingSectionId = null;
+    let editingItemId = null;
+    let editingSectionIdForItem = null;
+
+    // Check authentication
+    if (!authToken) {
+      window.location.href = '/booking/login.html';
+    }
+
+    // Load menu on page load
+    loadMenu();
+
+    async function loadMenu() {
+      try {
+        const response = await fetch(`${API_BASE}/menu`, {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        
+        if (!response.ok) throw new Error('Failed to load menu');
+        
+        currentMenu = await response.json();
+        renderMenu();
+      } catch (error) {
+        showError('Failed to load menu: ' + error.message);
+      }
+    }
+
+    function renderMenu() {
+      const container = document.getElementById('menu-container');
+      if (!currentMenu || !currentMenu.sections || currentMenu.sections.length === 0) {
+        container.innerHTML = '<div class="loading">No sections yet. Create one to get started.</div>';
+        return;
+      }
+
+      let html = '';
+      currentMenu.sections.forEach(section => {
+        html += `
+          <div class="section">
+            <div class="section-header">
+              <div>
+                <span style="font-size: 24px; margin-right: 10px;">${section.icon}</span>
+                <h2>${section.names.en}</h2>
+              </div>
+              <div>
+                <button class="btn" onclick="openEditSectionModal('${section.sectionId}')" style="margin-right: 5px;">Edit</button>
+                <button class="btn btn-danger" onclick="deleteSection('${section.sectionId}')">Delete</button>
+              </div>
+            </div>
+            <button class="btn" onclick="openAddItemModal('${section.sectionId}')" style="margin-bottom: 15px;">+ Add Item</button>
+            <div class="items-list">
+              ${(section.items || []).map(item => `
+                <div class="item-card">
+                  <div class="item-name">${item.names.en}</div>
+                  <div class="item-price">£${item.price.toFixed(2)}</div>
+                  <div class="item-actions">
+                    <button class="edit-btn" onclick="openEditItemModal('${section.sectionId}', '${item.itemId}')">Edit</button>
+                    <button class="delete-btn" onclick="deleteItem('${item.itemId}')">Delete</button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    }
+
+    // Section Modal Functions
+    function openAddSectionModal() {
+      editingSectionId = null;
+      document.getElementById('sectionModalTitle').textContent = 'Add Section';
+      document.getElementById('sectionIcon').value = '';
+      document.getElementById('sectionNameEn').value = '';
+      document.getElementById('sectionNameKo').value = '';
+      document.getElementById('sectionNameZh').value = '';
+      document.getElementById('sectionModal').classList.add('active');
+    }
+
+    async function openEditSectionModal(sectionId) {
+      const section = currentMenu.sections.find(s => s.sectionId === sectionId);
+      if (!section) return;
+
+      editingSectionId = sectionId;
+      document.getElementById('sectionModalTitle').textContent = 'Edit Section';
+      document.getElementById('sectionIcon').value = section.icon;
+      document.getElementById('sectionNameEn').value = section.names.en || '';
+      document.getElementById('sectionNameKo').value = section.names.ko || '';
+      document.getElementById('sectionNameZh').value = section.names.zh || '';
+      document.getElementById('sectionModal').classList.add('active');
+    }
+
+    function closeSectionModal() {
+      document.getElementById('sectionModal').classList.remove('active');
+      editingSectionId = null;
+    }
+
+    async function saveSectionModal(event) {
+      event.preventDefault();
+
+      const data = {
+        icon: document.getElementById('sectionIcon').value,
+        names: {
+          en: document.getElementById('sectionNameEn').value,
+          ko: document.getElementById('sectionNameKo').value,
+          zh: document.getElementById('sectionNameZh').value,
+        }
+      };
+
+      try {
+        const url = editingSectionId 
+          ? `${API_BASE}/menu/sections/${editingSectionId}`
+          : `${API_BASE}/menu/sections`;
+        
+        const method = editingSectionId ? 'PUT' : 'POST';
+
+        const response = await fetch(url, {
+          method,
+          headers: {
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (!response.ok) throw new Error('Failed to save section');
+
+        showSuccess(editingSectionId ? 'Section updated!' : 'Section created!');
+        closeSectionModal();
+        loadMenu();
+      } catch (error) {
+        showError('Failed to save section: ' + error.message);
+      }
+    }
+
+    async function deleteSection(sectionId) {
+      if (!confirm('Delete this section and all its items?')) return;
+
+      try {
+        const response = await fetch(`${API_BASE}/menu/sections/${sectionId}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+
+        if (!response.ok) throw new Error('Failed to delete section');
+
+        showSuccess('Section deleted!');
+        loadMenu();
+      } catch (error) {
+        showError('Failed to delete section: ' + error.message);
+      }
+    }
+
+    // Item Modal Functions
+    function openAddItemModal(sectionId) {
+      editingItemId = null;
+      editingSectionIdForItem = sectionId;
+      document.getElementById('itemModalTitle').textContent = 'Add Item';
+      document.getElementById('itemNameEn').value = '';
+      document.getElementById('itemNameKo').value = '';
+      document.getElementById('itemNameZh').value = '';
+      document.getElementById('itemDescEn').value = '';
+      document.getElementById('itemDescKo').value = '';
+      document.getElementById('itemDescZh').value = '';
+      document.getElementById('itemPrice').value = '';
+      document.getElementById('itemModal').classList.add('active');
+    }
+
+    async function openEditItemModal(sectionId, itemId) {
+      const section = currentMenu.sections.find(s => s.sectionId === sectionId);
+      const item = section.items.find(i => i.itemId === itemId);
+      if (!item) return;
+
+      editingItemId = itemId;
+      editingSectionIdForItem = sectionId;
+      document.getElementById('itemModalTitle').textContent = 'Edit Item';
+      document.getElementById('itemNameEn').value = item.names.en || '';
+      document.getElementById('itemNameKo').value = item.names.ko || '';
+      document.getElementById('itemNameZh').value = item.names.zh || '';
+      document.getElementById('itemDescEn').value = item.description?.en || '';
+      document.getElementById('itemDescKo').value = item.description?.ko || '';
+      document.getElementById('itemDescZh').value = item.description?.zh || '';
+      document.getElementById('itemPrice').value = item.price;
+      document.getElementById('itemModal').classList.add('active');
+    }
+
+    function closeItemModal() {
+      document.getElementById('itemModal').classList.remove('active');
+      editingItemId = null;
+      editingSectionIdForItem = null;
+    }
+
+    async function saveItemModal(event) {
+      event.preventDefault();
+
+      const data = {
+        sectionId: editingSectionIdForItem,
+        names: {
+          en: document.getElementById('itemNameEn').value,
+          ko: document.getElementById('itemNameKo').value,
+          zh: document.getElementById('itemNameZh').value,
+        },
+        description: {
+          en: document.getElementById('itemDescEn').value,
+          ko: document.getElementById('itemDescKo').value,
+          zh: document.getElementById('itemDescZh').value,
+        },
+        price: parseFloat(document.getElementById('itemPrice').value)
+      };
+
+      try {
+        const url = editingItemId 
+          ? `${API_BASE}/menu/items/${editingItemId}`
+          : `${API_BASE}/menu/items`;
+        
+        const method = editingItemId ? 'PUT' : 'POST';
+
+        const response = await fetch(url, {
+          method,
+          headers: {
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (!response.ok) throw new Error('Failed to save item');
+
+        showSuccess(editingItemId ? 'Item updated!' : 'Item created!');
+        closeItemModal();
+        loadMenu();
+      } catch (error) {
+        showError('Failed to save item: ' + error.message);
+      }
+    }
+
+    async function deleteItem(itemId) {
+      if (!confirm('Delete this item?')) return;
+
+      try {
+        const response = await fetch(`${API_BASE}/menu/items/${itemId}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+
+        if (!response.ok) throw new Error('Failed to delete item');
+
+        showSuccess('Item deleted!');
+        loadMenu();
+      } catch (error) {
+        showError('Failed to delete item: ' + error.message);
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('authToken');
+      window.location.href = '/booking/login.html';
+    }
+
+    function showError(message) {
+      const msgDiv = document.getElementById('message');
+      msgDiv.innerHTML = `<div class="error">${message}</div>`;
+      setTimeout(() => msgDiv.innerHTML = '', 5000);
+    }
+
+    function showSuccess(message) {
+      const msgDiv = document.getElementById('message');
+      msgDiv.innerHTML = `<div class="success">${message}</div>`;
+      setTimeout(() => msgDiv.innerHTML = '', 3000);
+    }
+  </script>
+</body>
+</html>

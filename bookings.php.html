@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><meta charset="utf-8">
+   <script>window.location.href = 'booking/reservation.php';</script>
+   <title>Yanji Korean BBQ | Bookings</title>
+   <meta name="description" content="Our space is warm and intimate. Single diners, couples or groups can be accomodated in our dining room. We accept reservations up to three months in advance."><meta name="keywords" content=""><meta name="format-detection" content="telephone=no"><meta name="viewport" content="width=device-width; user-scalable=no; initial-scale=0.9; maximum-scale=0.9">
+   <link href="favicon.ico" rel="shortcut icon" />
+   <link href="css.css?family=Roboto:100,300,400" rel="stylesheet" />
+   <link href="css/style2.css" rel="stylesheet" type="text/css" />
+   <link href="css/select2.css" rel="stylesheet" type="text/css" />
+   <link href="bookings.php.html" rel="canonical" /><!--[if lte IE 8]><script>window.location.replace("http://outdatedbrowser.com/en");</script><![endif]--><script type="text/javascript" src="ajax/libs/jquery/1.9.1/jquery.min.js"></script><script type="text/javascript" src="js/animation-b2.js"></script><script type="text/javascript" src="js/jquery.easing.1.3.js"></script><!--<script type="text/javascript" src="js/jquery.nice-select.min.js"></script>--><script type="text/javascript" src="js/jquery.validate.min.js"></script><script id="Cookiebot" src="uc.js" data-cbid="28f9e127-cb6e-49ff-849d-eee5aaff084f" type="text/javascript" async=""></script>
+   <style type="text/css">select { font-size:16px;}
+      html,body {height:100%; overflow-y:hidden;} @media only screen and (max-width: 768px) { html,body {height:inherit !Important;} body { overflow-y:scroll !important;}} 
+
+      .thick { position:relative; width:330px; display:block; margin:50px auto 0 auto; padding:0 0 0 35px; cursor:pointer; -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; text-align: left; font-weight: 300;}
+      .thick input { position:absolute; opacity:0;} .checkmark {  margin-right:5px; position:absolute; top:-2px; left:0; height:25px; width:25px; background:none; border:1px solid #444;}
+      .thick input:checked ~ .checkmark { } .checkmark:after { content:""; position:absolute; display:none;} .thick input:checked ~ .checkmark:after { display:block;}
+      .thick .checkmark:after { left:9px; top:5px; width:5px; height:10px; border:solid #444; border-width:0 3px 3px 0; -webkit-transform:rotate(45deg); -ms-transform:rotate(45deg); transform:rotate(45deg);}
+   </style>
+   <!-- Global site tag (gtag.js) - Google Analytics --><script async="" src="gtag/js.js?id=UA-149905753-1"></script><script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-149905753-1');
+</script>
+</head>
+<body data-new-gr-c-s-loaded="14.1079.0"><!-- THINGS -->
+<p></p>
+
+<div class="tra hamburger-box">
+<div class="tra hamburger-inner-b"></div>
+
+<div class="tra hamburger-inner"></div>
+
+<div class="hamburger-inner-a"></div>
+</div>
+
+<p class="hamburger-menu" style="display: none;"><a class="hamburger hamburger--emphatic-r">M&nbsp;E&nbsp;N&nbsp;U</a></p>
+<!-- MENU -->
+
+<div class="overlay">
+<ul class="nav">
+   <li class="nav-logo tra"><a href="index.htm#home"><img src="img/yanji-logo-main-new.png" width="150" /></a></li>
+   <li class="tra"><a href="index.htm#home">HOME</a></li>
+   <br />
+   <li class="tra"><a href="index.htm#about">ABOUT</a></li>
+   <br />
+   <li class="tra"><a href="yanji_menu_2021.pdf" target="_blank">MENU</a></li>
+   <br />
+   <li class="active"><a href="index.htm#bookatable">BOOK A TABLE</a></li>
+   <br />
+   <!--<li class='tra'><a class='fade-btn' href="gallery.php">GALLERY</a></li><br/> -->
+   <li class="tra"><a href="index.htm#contacts">CONTACTS</a></li>
+</ul>
+
+<div class="overlay-footer tra">&copy; 2022 Yanji Restaurant, Korean BBQ. All rights reserved</div>
+</div>
+
+<div id="bookings"><a class="fade-btn" href="index.php.html"><img class="logo-w tra" src="img/yanji-logo-main-w-new.png" style="width:150px !important" /></a>
+
+<div class="form popup-style">
+<p class="title-small ft"> Make your<br class="yestouch" />
+reservation 
+</p>
+<p class="title-text"><a class="bold ex title-text"> <span style="color:#FF000;"></span></a></p>
+
+<a href="https://web.dojo.app/create_booking/vendor/ZJh0LGxHABKDr3ECf8MzjPG5nPAW78rRwqTvpxoZkLc_restaurant"><p class="title-text">&nbsp;<span class="bold"><span style="color:#FF0000;">BOOK A TABLE</span></span></p></a>
+
+</div>
+<script>
+
+$(function() {
+   
+   // POPUP
+   $(".focus, .lightbox, .closebox,.ex").click(function(){   
+      $(".focus").fadeOut('fast');
+   });
+   $('.lightbox').animate({marginTop:'20px',opacity:1}, 900,"easeOutBack");
+   
+   // FORM      
+   $(".form").addClass('form-on');
+                     
+   $("form").validate({
+      ignore: [],
+      rules: {
+         day: "required",
+         check: "required",
+            month: "required",
+            hour: "required",
+         people: "required",
+         onfocusout: function(element) { $(element).valid(); }
+      },
+      errorPlacement: function(error, element) {
+            if (element.is('select:hidden')) {
+               $(".form-day,.form-month,.form-hour,.form-people,.checkmark").addClass('cc');
+            error.insertAfter(element.next('.nice-select'));
+            } else {
+                error.insertAfter(element);
+            }
+        },
+      submitHandler: function(form) {
+            
+         $.ajax({
+            url: form.action, // inside form tag
+              type: form.method, // inside form tag
+            data: $(form).serialize(),
+            success: function(token) {
+               
+               sendToAws(token);
+               setTimeout(() => {
+               var day = $('.form-day').val();
+               var month = $('.form-month').val();
+               var hour = $('.form-hour').val();
+               
+               if (day == '1' || day == '21' || day == '31') { var day = day+'st';}
+               else if (day == '2'|| day == '22') { var day = day+'nd';}
+               else if (day == '3' || day == '23') { var day = day+'rd';}
+               else { var day = day+'th';};
+            
+               //animation at validation
+               $("form, .ft").fadeOut('fast');
+               $(".form").addClass('form-ok');
+               $(".form-final").delay(400).fadeIn('slow');
+               $(".title-small2").html('Please check your spam folder for confirmation' ); 
+               }, 500);
+            }            
+         });
+       }
+   });
+   
+   //$('select').niceSelect(); 
+   
+});   
+function sendToAws(token){
+            let day = document.querySelector('#day').value;
+         let month = document.querySelector('#month').value;
+         let hour = document.querySelector('#hour').value;
+         let people = document.querySelector('#people').value;
+         let name = document.querySelector('#name').value;
+         let surname = document.querySelector('#surname').value;
+         let telephone = document.querySelector('#telephone').value;
+         let email = document.querySelector('#email').value;
+         let message = document.querySelector('#message').value;
+
+         let body = {
+            day:day,
+            month:month,
+            hour:hour,
+            people:people,
+            name:name,
+            surname:surname,
+            telephone:telephone,
+            email:email,
+            message:message
+         }
+            console.log(body);
+               
+         $.ajax({
+            url: 'https://uoajko8v0k.execute-api.us-west-1.amazonaws.com/dev/send2Mail', // inside form tag
+              type: 'post', // inside form tag
+            data: body,
+                headers: {
+                "Authorization": "Bearer " + token
+                },
+            success: function(data) {
+               console.log(data);
+                  setTimeout(()=>{
+                   $('.fade-btn').click();
+               },5000);
+               // $(".title-small2").html('See you ' + month + ' ' + day + ' at ' + hour );
+                
+                
+            }});
+}
+
+</script></div></html>

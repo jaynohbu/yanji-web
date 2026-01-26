@@ -1,0 +1,235 @@
+{
+  "currency": "GBP",
+  "currencySymbol": "£",
+  "sections": [
+    {
+      "id": "yanji-skewers-set",
+      "icon": "🥢",
+      "names": {
+        "en": "YANJI SKEWERS SET",
+        "zh": "延吉烧烤套餐",
+        "ko": "연길 꼬치 세트"
+      },
+      "meta": {
+        "description": {
+          "en": "All skewers are charcoal grilled at your table",
+          "zh": "所有串类均在餐桌上炭火烧烤",
+          "ko": "모든 꼬치는 테이블에서 숯불로 구워집니다"
+        }
+      },
+      "items": [
+        {
+          "id": "yanji-lamb-set",
+          "names": {
+            "en": "Lamb",
+            "zh": "羊肉串",
+            "ko": "양꼬치"
+          },
+          "description": {
+            "en": "10 marinated lamb skewers",
+            "zh": "腌制羊肉串 10串",
+            "ko": "양꼬치 10꼬치"
+          },
+          "price": 21.95,
+          "imageUrl": null
+        },
+        {
+          "id": "yanji-beef-set",
+          "names": {
+            "en": "Beef",
+            "zh": "牛肉串",
+            "ko": "소꼬치"
+          },
+          "description": {
+            "en": "10 marinated beef skewers",
+            "zh": "腌制牛肉串 10串",
+            "ko": "소꼬치 10꼬치"
+          },
+          "price": 21.95,
+          "imageUrl": null
+        },
+        {
+          "id": "yanji-mixed-set",
+          "names": {
+            "en": "Mixed Lamb & Beef",
+            "zh": "牛羊混合串",
+            "ko": "양·소 혼합 꼬치"
+          },
+          "description": {
+            "en": "12 marinated skewers (6 lamb, 6 beef)",
+            "zh": "腌制混合串 12串（6羊·6牛）",
+            "ko": "혼합 꼬치 12꼬치 (양 6, 소 6)"
+          },
+          "price": 24.95,
+          "imageUrl": null
+        }
+      ]
+    },
+    {
+      "id": "bbq-skewers",
+      "icon": "🔥",
+      "names": {
+        "en": "BBQ SKEWERS",
+        "zh": "烧烤串",
+        "ko": "꼬치구이"
+      },
+      "meta": {
+        "portion": {
+          "en": "2 skewers per portion",
+          "zh": "每份2串",
+          "ko": "1인분 2꼬치"
+        }
+      },
+      "items": [
+        {
+          "id": "chicken-skewer",
+          "names": {
+            "en": "Chicken Skewer",
+            "zh": "鸡肉串",
+            "ko": "닭꼬치"
+          },
+          "price": 4.60
+        },
+        {
+          "id": "chicken-wing",
+          "names": {
+            "en": "Chicken Wing",
+            "zh": "鸡翅",
+            "ko": "닭날개"
+          },
+          "price": 4.60
+        },
+        {
+          "id": "chicken-gizzard",
+          "names": {
+            "en": "Chicken Gizzard",
+            "zh": "鸡胗",
+            "ko": "닭똥집"
+          },
+          "price": 4.95
+        },
+        {
+          "id": "chicken-heart",
+          "names": {
+            "en": "Chicken Heart",
+            "zh": "鸡心",
+            "ko": "닭염통"
+          },
+          "price": 4.95
+        },
+        {
+          "id": "pork-belly",
+          "names": {
+            "en": "Pork Belly",
+            "zh": "五花肉",
+            "ko": "삼겹살"
+          },
+          "price": 4.95
+        },
+        {
+          "id": "pork-belly-enoki",
+          "names": {
+            "en": "Pork Belly Enoki Mushroom",
+            "zh": "五花肉金针菇",
+            "ko": "삼겹살 팽이버섯"
+          },
+          "price": 6.10
+        },
+        {
+          "id": "pig-intestine",
+          "names": {
+            "en": "Pig Intestine",
+            "zh": "猪大肠",
+            "ko": "돼지곱창"
+          },
+          "price": 4.95
+        },
+        {
+          "id": "squid",
+          "names": {
+            "en": "Squid",
+            "zh": "鱿鱼",
+            "ko": "오징어"
+          },
+          "price": 6.10
+        },
+        {
+          "id": "king-prawn",
+          "names": {
+            "en": "King Prawn",
+            "zh": "大虾",
+            "ko": "왕새우"
+          },
+          "price": 6.10
+        },
+        {
+          "id": "fish-tofu",
+          "names": {
+            "en": "Fish Tofu",
+            "zh": "鱼豆腐",
+            "ko": "어묵"
+          },
+          "price": 4.70
+        },
+        {
+          "id": "sausage",
+          "names": {
+            "en": "Sausage",
+            "zh": "香肠",
+            "ko": "소시지"
+          },
+          "price": 4.20
+        },
+        {
+          "id": "quail-egg",
+          "names": {
+            "en": "Quail Egg",
+            "zh": "鹌鹑蛋",
+            "ko": "메추리알"
+          },
+          "price": 5.95
+        },
+        {
+          "id": "chinese-bun",
+          "names": {
+            "en": "Chinese Bun",
+            "zh": "中式馒头",
+            "ko": "꽃빵"
+          },
+          "price": 4.20,
+          "vegetarian": true
+        },
+        {
+          "id": "aubergine",
+          "names": {
+            "en": "Aubergine",
+            "zh": "茄子",
+            "ko": "가지"
+          },
+          "price": 8.20,
+          "vegetarian": true
+        },
+        {
+          "id": "enoki-mushroom",
+          "names": {
+            "en": "Enoki Mushroom",
+            "zh": "金针菇",
+            "ko": "팽이버섯"
+          },
+          "price": 6.10,
+          "vegetarian": true
+        },
+        {
+          "id": "sweet-corn",
+          "names": {
+            "en": "Sweet Corn",
+            "zh": "玉米",
+            "ko": "옥수수"
+          },
+          "price": 5.10,
+          "vegetarian": true
+        }
+      ]
+    }
+  ]
+}

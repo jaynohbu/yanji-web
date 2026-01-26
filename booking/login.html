@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yanji Admin - Login</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 420px;
+      overflow: hidden;
+    }
+
+    .login-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .login-header img {
+      width: 120px;
+      margin-bottom: 15px;
+    }
+
+    .login-header h1 {
+      font-size: 24px;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+
+    .login-header p {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    .login-body {
+      padding: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #e1e5e9;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: all 0.3s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #4ecdc4;
+      box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.1);
+    }
+
+    .form-group input.error {
+      border-color: #e74c3c;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(78, 205, 196, 0.4);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: #f5f5f5;
+      color: #333;
+      margin-top: 10px;
+    }
+
+    .btn-secondary:hover {
+      background: #eee;
+    }
+
+    .forgot-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .forgot-link a {
+      color: #4ecdc4;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .forgot-link a:hover {
+      text-decoration: underline;
+    }
+
+    .alert {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .alert-error {
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+    }
+
+    .alert-success {
+      background: #f0fdf4;
+      color: #16a34a;
+      border: 1px solid #bbf7d0;
+    }
+
+    .alert-info {
+      background: #eff6ff;
+      color: #2563eb;
+      border: 1px solid #bfdbfe;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .view {
+      display: block;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .password-requirements {
+      font-size: 12px;
+      color: #666;
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    .password-requirements ul {
+      margin-top: 5px;
+      padding-left: 20px;
+    }
+
+    .back-to-login {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .back-to-login a {
+      color: #666;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back-to-login a:hover {
+      color: #4ecdc4;
+    }
+
+    .lang-switch {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .lang-btn {
+      padding: 8px 16px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.3s;
+    }
+
+    .lang-btn:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .lang-btn.active {
+      background: #4ecdc4;
+      border-color: #4ecdc4;
+      color: #1a1a2e;
+    }
+  </style>
+</head>
+<body>
+  <div class="lang-switch">
+    <button class="lang-btn" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="ko">KO</button>
+  </div>
+
+  <div class="login-container">
+    <div class="login-header">
+      <img src="https://yanjirestaurant.com/img/yanji-logo-main-w-new.png" alt="Yanji" onerror="this.style.display='none'">
+      <h1 data-i18n="title">Admin Login</h1>
+      <p data-i18n="subtitle">Restaurant Management System</p>
+    </div>
+
+    <!-- Login View -->
+    <div class="login-body view" id="login-view">
+      <div id="login-alert" class="alert hidden"></div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label data-i18n="username">Username</label>
+          <input type="text" id="username" name="username" required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="password">Password</label>
+          <input type="password" id="password" name="password" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="login-btn">
+          <span data-i18n="loginBtn">Sign In</span>
+        </button>
+      </form>
+
+      <div class="forgot-link">
+        <a href="#" id="show-forgot" data-i18n="forgotPassword">Forgot password?</a>
+      </div>
+    </div>
+
+    <!-- New Password Required View -->
+    <div class="login-body hidden" id="new-password-view">
+      <div id="new-password-alert" class="alert alert-info">
+        <span data-i18n="newPasswordRequired">You must set a new password to continue.</span>
+      </div>
+
+      <form id="new-password-form">
+        <div class="form-group">
+          <label data-i18n="newPassword">New Password</label>
+          <input type="password" id="new-password" name="new-password" required autocomplete="new-password">
+          <div class="password-requirements">
+            <span data-i18n="passwordRequirements">Password must contain:</span>
+            <ul>
+              <li data-i18n="req8chars">At least 8 characters</li>
+              <li data-i18n="reqUppercase">Uppercase letter</li>
+              <li data-i18n="reqLowercase">Lowercase letter</li>
+              <li data-i18n="reqNumber">Number</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirm-new-password" name="confirm-new-password" required autocomplete="new-password">
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="new-password-btn">
+          <span data-i18n="setPassword">Set Password</span>
+        </button>
+      </form>
+
+      <div class="back-to-login">
+        <a href="#" id="back-to-login-1" data-i18n="backToLogin">&larr; Back to login</a>
+      </div>
+    </div>
+
+    <!-- Forgot Password View -->
+    <div class="login-body hidden" id="forgot-view">
+      <div id="forgot-alert" class="alert hidden"></div>
+
+      <form id="forgot-form">
+        <div class="form-group">
+          <label data-i18n="usernameOrEmail">Username or Email</label>
+          <input type="text" id="forgot-username" name="forgot-username" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="forgot-btn">
+          <span data-i18n="sendCode">Send Verification Code</span>
+        </button>
+      </form>
+
+      <div class="back-to-login">
+        <a href="#" id="back-to-login-2" data-i18n="backToLogin">&larr; Back to login</a>
+      </div>
+    </div>
+
+    <!-- Reset Password View -->
+    <div class="login-body hidden" id="reset-view">
+      <div id="reset-alert" class="alert hidden"></div>
+
+      <form id="reset-form">
+        <div class="form-group">
+          <label data-i18n="verificationCode">Verification Code</label>
+          <input type="text" id="reset-code" name="reset-code" required placeholder="Enter code from email" autocomplete="one-time-code">
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="newPassword">New Password</label>
+          <input type="password" id="reset-password" name="reset-password" required autocomplete="new-password">
+          <div class="password-requirements">
+            <span data-i18n="passwordRequirements">Password must contain:</span>
+            <ul>
+              <li data-i18n="req8chars">At least 8 characters</li>
+              <li data-i18n="reqUppercase">Uppercase letter</li>
+              <li data-i18n="reqLowercase">Lowercase letter</li>
+              <li data-i18n="reqNumber">Number</li>
+            </ul>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="reset-btn">
+          <span data-i18n="resetPassword">Reset Password</span>
+        </button>
+      </form>
+
+      <div class="back-to-login">
+        <a href="#" id="back-to-login-3" data-i18n="backToLogin">&larr; Back to login</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script>
+    // Fallback API_BASE if config.js not loaded
+    const API_BASE = window.API_BASE || 'https://yanji.tunesbasis.com';
+  </script>
+  <script>
+    // i18n translations
+    const i18n = {
+      en: {
+        title: 'Admin Login',
+        subtitle: 'Restaurant Management System',
+        username: 'Username',
+        password: 'Password',
+        loginBtn: 'Sign In',
+        forgotPassword: 'Forgot password?',
+        newPasswordRequired: 'You must set a new password to continue.',
+        newPassword: 'New Password',
+        confirmPassword: 'Confirm Password',
+        setPassword: 'Set Password',
+        backToLogin: '← Back to login',
+        usernameOrEmail: 'Username or Email',
+        sendCode: 'Send Verification Code',
+        verificationCode: 'Verification Code',
+        resetPassword: 'Reset Password',
+        passwordRequirements: 'Password must contain:',
+        req8chars: 'At least 8 characters',
+        reqUppercase: 'Uppercase letter',
+        reqLowercase: 'Lowercase letter',
+        reqNumber: 'Number',
+        errorInvalidCredentials: 'Invalid username or password',
+        errorPasswordMismatch: 'Passwords do not match',
+        errorWeakPassword: 'Password does not meet requirements',
+        errorGeneric: 'An error occurred. Please try again.',
+        successCodeSent: 'Verification code sent to your email',
+        successPasswordReset: 'Password reset successfully. Please login.',
+        loggingIn: 'Signing in...',
+        sending: 'Sending...',
+        resetting: 'Resetting...',
+      },
+      ko: {
+        title: '관리자 로그인',
+        subtitle: '레스토랑 관리 시스템',
+        username: '사용자명',
+        password: '비밀번호',
+        loginBtn: '로그인',
+        forgotPassword: '비밀번호를 잊으셨나요?',
+        newPasswordRequired: '계속하려면 새 비밀번호를 설정해야 합니다.',
+        newPassword: '새 비밀번호',
+        confirmPassword: '비밀번호 확인',
+        setPassword: '비밀번호 설정',
+        backToLogin: '← 로그인으로 돌아가기',
+        usernameOrEmail: '사용자명 또는 이메일',
+        sendCode: '인증 코드 전송',
+        verificationCode: '인증 코드',
+        resetPassword: '비밀번호 재설정',
+        passwordRequirements: '비밀번호 요구사항:',
+        req8chars: '최소 8자 이상',
+        reqUppercase: '대문자 포함',
+        reqLowercase: '소문자 포함',
+        reqNumber: '숫자 포함',
+        errorInvalidCredentials: '잘못된 사용자명 또는 비밀번호입니다',
+        errorPasswordMismatch: '비밀번호가 일치하지 않습니다',
+        errorWeakPassword: '비밀번호가 요구사항을 충족하지 않습니다',
+        errorGeneric: '오류가 발생했습니다. 다시 시도해주세요.',
+        successCodeSent: '이메일로 인증 코드를 전송했습니다',
+        successPasswordReset: '비밀번호가 재설정되었습니다. 로그인해주세요.',
+        loggingIn: '로그인 중...',
+        sending: '전송 중...',
+        resetting: '재설정 중...',
+      }
+    };
+
+    let currentLang = localStorage.getItem('yanji-lang') || 'en';
+    let challengeSession = null;
+    let challengeUsername = null;
+    let forgotUsername = null;
+
+    // Apply translations
+    function applyTranslations() {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (i18n[currentLang][key]) {
+          el.textContent = i18n[currentLang][key];
+        }
+      });
+
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === currentLang);
+      });
+    }
+
+    function t(key) {
+      return i18n[currentLang][key] || key;
+    }
+
+    // Language switcher
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentLang = btn.dataset.lang;
+        localStorage.setItem('yanji-lang', currentLang);
+        applyTranslations();
+      });
+    });
+
+    // View management
+    function showView(viewId) {
+      document.querySelectorAll('.login-body').forEach(v => v.classList.add('hidden'));
+      document.getElementById(viewId).classList.remove('hidden');
+    }
+
+    function showAlert(containerId, message, type = 'error') {
+      const alert = document.getElementById(containerId);
+      alert.textContent = message;
+      alert.className = `alert alert-${type}`;
+      alert.classList.remove('hidden');
+    }
+
+    function hideAlert(containerId) {
+      document.getElementById(containerId).classList.add('hidden');
+    }
+
+    function setButtonLoading(btnId, loading, text = '') {
+      const btn = document.getElementById(btnId);
+      btn.disabled = loading;
+      if (loading) {
+        btn.innerHTML = `<span class="spinner"></span>${text}`;
+      } else {
+        const originalText = btn.querySelector('[data-i18n]')?.dataset.i18n || 'Submit';
+        btn.innerHTML = `<span data-i18n="${originalText}">${t(originalText)}</span>`;
+      }
+    }
+
+    // Password validation
+    function isPasswordValid(password) {
+      return password.length >= 8 &&
+             /[A-Z]/.test(password) &&
+             /[a-z]/.test(password) &&
+             /[0-9]/.test(password);
+    }
+
+    // Login form handler
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideAlert('login-alert');
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      setButtonLoading('login-btn', true, t('loggingIn'));
+
+      try {
+        const response = await fetch(`${API_BASE}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || t('errorInvalidCredentials'));
+        }
+
+        if (data.challengeName === 'NEW_PASSWORD_REQUIRED') {
+          challengeSession = data.session;
+          challengeUsername = username;
+          showView('new-password-view');
+          setButtonLoading('login-btn', false);
+          return;
+        }
+
+        // Store tokens
+        localStorage.setItem('yanji-access-token', data.accessToken);
+        localStorage.setItem('yanji-id-token', data.idToken);
+        localStorage.setItem('yanji-refresh-token', data.refreshToken);
+        localStorage.setItem('yanji-token-expiry', Date.now() + (data.expiresIn * 1000));
+
+        // Redirect to dashboard
+        window.location.href = 'dashboard.php';
+
+      } catch (error) {
+        showAlert('login-alert', error.message, 'error');
+        setButtonLoading('login-btn', false);
+      }
+    });
+
+    // New password form handler
+    document.getElementById('new-password-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const newPassword = document.getElementById('new-password').value;
+      const confirmPassword = document.getElementById('confirm-new-password').value;
+
+      if (newPassword !== confirmPassword) {
+        showAlert('new-password-alert', t('errorPasswordMismatch'), 'error');
+        return;
+      }
+
+      if (!isPasswordValid(newPassword)) {
+        showAlert('new-password-alert', t('errorWeakPassword'), 'error');
+        return;
+      }
+
+      setButtonLoading('new-password-btn', true, t('sending'));
+
+      try {
+        const response = await fetch(`${API_BASE}/auth/new-password`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: challengeUsername,
+            newPassword,
+            session: challengeSession
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || t('errorGeneric'));
+        }
+
+        // Store tokens
+        localStorage.setItem('yanji-access-token', data.accessToken);
+        localStorage.setItem('yanji-id-token', data.idToken);
+        localStorage.setItem('yanji-refresh-token', data.refreshToken);
+        localStorage.setItem('yanji-token-expiry', Date.now() + (data.expiresIn * 1000));
+
+        // Redirect to dashboard
+        window.location.href = 'dashboard.php';
+
+      } catch (error) {
+        showAlert('new-password-alert', error.message, 'error');
+        setButtonLoading('new-password-btn', false);
+      }
+    });
+
+    // Forgot password form handler
+    document.getElementById('forgot-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideAlert('forgot-alert');
+
+      forgotUsername = document.getElementById('forgot-username').value;
+      setButtonLoading('forgot-btn', true, t('sending'));
+
+      try {
+        const response = await fetch(`${API_BASE}/auth/forgot-password`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: forgotUsername })
+        });
+
+        await response.json();
+
+        // Always show success (security - don't reveal if user exists)
+        showAlert('forgot-alert', t('successCodeSent'), 'success');
+
+        setTimeout(() => {
+          showView('reset-view');
+        }, 1500);
+
+      } catch (error) {
+        showAlert('forgot-alert', t('successCodeSent'), 'success');
+        setTimeout(() => {
+          showView('reset-view');
+        }, 1500);
+      } finally {
+        setButtonLoading('forgot-btn', false);
+      }
+    });
+
+    // Reset password form handler
+    document.getElementById('reset-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideAlert('reset-alert');
+
+      const code = document.getElementById('reset-code').value;
+      const newPassword = document.getElementById('reset-password').value;
+
+      if (!isPasswordValid(newPassword)) {
+        showAlert('reset-alert', t('errorWeakPassword'), 'error');
+        return;
+      }
+
+      setButtonLoading('reset-btn', true, t('resetting'));
+
+      try {
+        const response = await fetch(`${API_BASE}/auth/confirm-forgot-password`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: forgotUsername,
+            confirmationCode: code,
+            newPassword
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || t('errorGeneric'));
+        }
+
+        showAlert('login-alert', t('successPasswordReset'), 'success');
+        showView('login-view');
+
+      } catch (error) {
+        showAlert('reset-alert', error.message, 'error');
+        setButtonLoading('reset-btn', false);
+      }
+    });
+
+    // Navigation links
+    document.getElementById('show-forgot').addEventListener('click', (e) => {
+      e.preventDefault();
+      hideAlert('login-alert');
+      showView('forgot-view');
+    });
+
+    ['back-to-login-1', 'back-to-login-2', 'back-to-login-3'].forEach(id => {
+      document.getElementById(id).addEventListener('click', (e) => {
+        e.preventDefault();
+        showView('login-view');
+      });
+    });
+
+    // Check if already logged in
+    function checkAuth() {
+      const token = localStorage.getItem('yanji-access-token');
+      const expiry = localStorage.getItem('yanji-token-expiry');
+
+      if (token && expiry && Date.now() < parseInt(expiry)) {
+        // Already logged in, redirect to dashboard
+        window.location.href = 'dashboard.php';
+      }
+    }
+
+    // Initialize
+    applyTranslations();
+    checkAuth();
+  </script>
+</body>
+</html>

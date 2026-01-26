@@ -1,0 +1,364 @@
+
+
+<!DOCTYPE html>
+<html xmlns="https://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>MonginiGraphics | Welcome</title>
+	<meta name="description" content="Simone Mongini is the founder of London Graphic & Web Design company MonginiGraphics. His leading aim is to create beautiful graphics and websites through an emotional connection." />
+	<meta name="keywords"  content="simone mongini, mongini graphics, web atelier, monginigraphics, london web design, remarkable websites, pixel perfection, responsive websites, exclusive, web design" />
+    <meta name="format-detection" content ="telephone=no">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=0.9, maximum-scale=0.9" />
+	<link rel="icon" href="https://www.monginigraphics.me/favicon.ico">
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+   	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<link rel="stylesheet" type="text/css" href="css/jquery.fullPage.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="js/fullpage.parallax.min.js"></script>
+	<script type="text/javascript" src="js/jquery.fullpage.extensions.min.js"></script>
+    <script type="text/javascript" src="js/easing.js"></script>
+    <!-- Codice Facebook -->
+	<meta property="og:url" content="https://www.monginigraphics.me/" />
+    <meta property="og:type" content="website" />
+    <meta property="fb:app_id" content="1985158124846642" />
+	<meta property="og:title" content="MonginiGraphics | Web Atelier" />
+	<meta property="og:description" content="Simone Mongini is the founder of London Graphic & Web Design company MonginiGraphics. His leading aim is to create beautiful graphics and websites through an emotional connection." />
+	<meta property="og:image" content="https://www.monginigraphics.me/img_home/work_mg.jpg" /> <!-- CAMBIA LINK !!!! -->
+	<meta property="og:site_name" content="MonginiGraphics | Web Atelier">
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-114289559-1"></script>
+<script type="text/plain" data-cookieconsent="statistics">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-114289559-1');
+</script>
+<script>
+$(window).load(function() {
+// ITEMS TRANSLATE TOP	
+	var $animation_elements = $('.anim1,.anim2');
+	var $window = $(window);
+
+	function check_if_in_view() {
+  	var window_height = $window.height();
+  	var window_top_position = $window.scrollTop();
+  	var window_bottom_position = (window_top_position + window_height);
+
+  	$.each($animation_elements, function() {
+    var $element = $(this);
+    var element_height = $element.outerHeight();
+    var element_top_position = $element.offset().top;
+    var element_bottom_position = (element_top_position + element_height);
+
+    //check to see if this current container is within viewport
+	if ((element_bottom_position >= window_top_position) && (element_top_position <= window_bottom_position) && 
+		($element.hasClass("anim1") || $element.hasClass("anim2"))) {
+			$element.addClass('in-view');
+		};
+  	});
+		
+	}
+	$window.on('scroll resize', check_if_in_view);
+	$window.trigger('scroll');
+	
+});
+</script>
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="50f8cf68-189a-4236-b81b-aeee1c2cbbbe" type="text/javascript" async></script>
+</head>
+<body>
+
+<!-- THINGS -->
+<div class="loader-main l-tra"><div class="spinner"></div></div>
+<div class="pre-ham tra click-trigger" data-click-id='click-menu'><a class="hamburger hamburger--elastic"><div class="hamburger-box"><div class="hamburger-inner"></div></div></a><p class="ntouch menu tra">MENU</p></div>
+
+<a class="next tra">NEXT</a>
+
+<!-- MENU -->
+<div class="overlay tra2">
+    <ul class="nav">
+		<li class="mm"><a data-menuanchor='homepage' href='#homepage' ><img src="https://www.monginigraphics.me/img/mongini-graphics-logo.png" width="85" /></a></li>
+        <li><a data-menuanchor='aboutme' href='#aboutme' >About<p class="under tra"></p></a></li>
+        <li><a data-menuanchor='features' href='#features' >Features<p class="under tra"></p></a></li>
+        <li><a data-menuanchor='works' href='#works' class='click-trigger' data-click-id='click-projects' >Projects<p class="under tra"></p></a></li>
+        <li><a data-menuanchor='contact' href='#contact' >Contact<p class="under tra"></p></a></li>
+		<li><a data-click-id="click-brochure" class="download click-trigger" href="https://www.monginigraphics.me/201802_MonginiGraphics_Portfolio.pdf" target="_blank" >DOWNLOAD BROCHURE<p class="under tra"></p></a></li>
+    </ul>
+    <div class="overlay-footer tra">
+		<p class="text_2 sub">MonginiGraphics • Web Atelier •</p>
+        <p class="cities">MILAN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LONDON</p>
+    </div>
+</div>
+<div id="fullpage">
+
+<!-- HOMEPAGE  -->
+	<div class="section" id="section1">
+       <div id="intro" class="pad-left">
+          <div class="l tra"><span>E</span></div>
+          <div class="l tra"><span>X</span></div>
+          <div class="l tra"><span>C</span></div>
+          <div class="l tra"><span>E</span></div>
+          <div class="l tra"><span>L</span></div>
+          <div class="l tra"><span>L</span></div>
+          <div class="l tra"><span>E</span></div>
+          <div class="l tra"><span>N</span></div>
+          <div class="l tra"><span>C</span></div>
+          <div class="l tra"><span>E</span></div>
+          <br/>
+          <div class="l tra"><span>B</span></div>
+          <div class="l tra"><span>E</span></div>
+          <div class="l tra"><span>G</span></div>
+          <div class="l tra"><span>I</span></div>
+          <div class="l tra"><span>N</span></div>
+          <div class="l tra"><span>S</span></div>
+          <div class="l tra"><span>&nbsp;</span></div>
+          <div class="l tra"><span>W</span></div>
+          <div class="l tra"><span>I</span></div>
+          <div class="l tra"><span>T</span></div>
+          <div class="l tra"><span>H</span></div>
+          <br/>
+          <div class="l tra"><span class="col_1">P</span></div>
+          <div class="l tra"><span class="col_1">R</span></div>
+          <div class="l tra"><span class="col_1">O</span></div>
+          <div class="l tra"><span class="col_1">P</span></div>
+          <div class="l tra"><span class="col_1">E</span></div>
+          <div class="l tra"><span class="col_1">R</span></div>
+          <div class="l tra"><span>&nbsp;</span></div>
+          <br class="ttouch"/>
+          <div class="l tra"><span>G</span></div>
+          <div class="l tra"><span>R</span></div>
+          <div class="l tra"><span>A</span></div>
+          <div class="l tra"><span>P</span></div>
+          <div class="l tra"><span>H</span></div>
+          <div class="l tra"><span>I</span></div>
+          <div class="l tra"><span>C</span></div>
+          <br/>
+          <div class="l tra"><span>F</span></div>
+          <div class="l tra"><span>O</span></div>
+          <div class="l tra"><span>U</span></div>
+          <div class="l tra"><span>N</span></div>
+          <div class="l tra"><span>D</span></div>
+          <div class="l tra"><span>A</span></div>
+          <div class="l tra"><span>T</span></div>
+          <div class="l tra"><span>I</span></div>
+          <div class="l tra"><span>O</span></div>
+          <div class="l tra"><span>N</span></div>
+          <div class="l tra"><span>S</span></div>
+        </div>
+        <a href="#aboutme" class="logo text_logo tra2 pad-left"><div>MONGINIGRAPHICS<p class="col_1">• ENTER WEBSITE •</p></div></a>
+ 		  
+        <div class="slider fp-bg">
+            <div class="wrap">
+				<div class='panel h0 forkdeli'></div>
+						<div class='panel h1 orawine'></div>
+						<div class='panel h2 aradesign'></div>
+						<div class='panel h3 ottoottobre'></div>
+						<div class='panel h4 kamilondon'></div>
+												  
+            </div>
+        </div>
+            
+        <div class="infoprod tra ntouch">           
+            <div class="nav2">
+                <ul>
+					<li class='tra title_4'>Fork Deli</li>
+							<li class='tra title_4'>Ora Wine</li>
+							<li class='tra title_4'>Ara Design</li>
+							<li class='tra title_4'>Otto Ottobre</li>
+							<li class='tra title_4'>Kami London</li>
+							                </ul>
+                <a class="next2"></a>
+                <a class="previous2"></a>
+            </div>
+			<div class="progress_bar"></div>
+        </div>
+        
+	</div>
+    
+<!-- ABOUT ME -->
+	<div class="section" id="section2">
+   
+		<h1 class="title_1">FIFTY PERCENT <br class="nheight"/><span class="col_2">DESIGNER</span>, <br class="yheight"/>FIFTY <br  class="nheight ntouch"/>PERCENT <span class="col_2">CODER</span>.</h1>
+		
+		<p class="text">Simone Mongini is the founder of London <span class="bold">Branding & Digital Design</span> company MonginiGraphics. <br class="ntouch"/>MonginiGraphics' leading aim is to create beautiful <span class="bold">Graphics & Websites</span> through an emotional connection.
+        <br/><br class="nheight"/>
+        Growing up around Lake Maggiore in northern Italy, Simone studied graphic design at <span class="bold">NABA in Milan</span>.
+			<br/>He then learnt how to code himself and he has now been <span class="bold">liaising with design projects</span> for over 10 years.<br class="ntouch" /> An exception cannot be made on:
+		</p>
+			
+		<ul id="all-hex">
+			<li class="last-no">
+				<div class="hex hex1 title_3 bold">CONTENT<br/>QUALITY
+            		<div class="hex-hover tra"></div>
+            	</div>
+         	</li>
+			<li class="last-no">
+				<div class="hex hex2 title_3 bold">EXCLUSIVE<br/>GRAPHICS
+            		<div class="hex-hover tra"></div>
+            	</div>
+          	</li>
+			<br class="ttouch"/>
+			<li class="last-3 last-no">
+            	<div class="hex hex3 title_3 bold">PIXEL<br/>PERFECTION
+            		<div class="hex-hover tra"></div>
+            	</div>
+          	</li>
+			<li class="last ntouch">
+				<a href="#features" class="hex title_3 bold"><span style="line-height:45px;font-size:55px;">+</span>
+            		<div class="hex-hover tra"></div>
+            	</a>
+            </li>
+		</ul>
+        
+        <div class="b-bg b1"></div>
+        <div class="b-bg b2"></div>
+		<div class="b-bg b3"></div>
+        
+	</div>
+
+<!-- FEATURES -->
+	<div class="section" id="section3">
+		
+		<p class="title_1 pad-left">WHAT MAKES <br class="ttouch"/>MY<br class="ntouch"/> PROJECTS<span class="col_2"> REMARKABLE</span>:</p>
+        <ul id="all-feat" class="pad-left">
+        	<li class="text_2 anim2">
+            	<img src="img/feature-1.png" class="tra"/>
+                <p class="title_3 bold">RESPONSIVE LAYOUT</p>
+            	<p class="text_2">No matter what device you are browsing with, your website will look stunning everywhere by learning how to adapt and rearrange its content.</p>
+			</li><li class="text_2 anim2">
+            	<img src="img/feature-2.png" class="tra"/>
+                <p class="title_3 bold">EXCLUSIVE GRAPHICS</p>
+            	<p class="text_2">It's not "just another" ready-made template. It's a fearless bespoke website built from ground-up to make you stand out from the samey crowd.</p> 
+				<!-- to make you stand out from the samey crowd -->
+			</li><li class="text_2 anim2">
+            	<img src="img/feature-3.png" class="tra"/>
+                <p class="title_3 bold">USER-FRIENDLY</p>
+            	<p class="text_2">Progressive disclosure is the key to future web design. I always achieve an excellent user experience by reducing the clutter and confusion.</p>
+			</li><li class="text_2 anim2">
+            	<img src="img/feature-4b.png" class="tra"/>
+                <p class="title_3 bold">CONTENT QUALITY</p>
+            	<p class="text_2">Colour balance, interactivity, performance, call to actions and much more. These are fundamental features in every work I put my hands on.</p>
+			</li><li class="text_2 anim2">
+            	<img src="img/feature-5.png" class="tra"/>
+                <p class="title_3 bold">COMPELLING NARRATIVE</p>
+            	<p class="text_2">Powerful visuals are always partnered with a strong narrative. The headings walk you through the site and make you want to find out more.</p>
+			</li><li class="text_2 anim2">
+            	<img src="img/feature-6.png" class="tra"/>
+                <p class="title_3 bold">PIXEL PERFECTION</p>
+            	<p class="text_2">Pixels are gauged to emphasize every aspect of the story. All elements are always implemented to the fullest, for the sharpest, cleanest look.</p>
+			</li>
+        </ul>
+
+	</div>
+
+<!-- WORKS -->
+	<div class="section" id="section4">
+    
+		<p class="title_1 ttouch">EXPLORE <br />MY WORKS:</p>
+		
+		<ul id="all-works" class="pad-left">
+        	<li class="title_2 anim1">
+				<a href="works/kamilondon/" id=".w1" class="works_hover fadebtn tra">
+                	<p class="ttouch see title_3 tra">SEE PROJECT</p>
+					<div style="background-image:url(img_home/work_kamilondon.jpg)" class="tra ttouch hov1_pre"></div>
+					<span class="ntouch">KAMI LONDON</span>
+                	<div class="arrow-cool tra ntouch"></div>
+					<p class="text sub ntouch">Branding / Web design / Web development</p>
+				</a>
+			</li><li class="title_2 anim1">
+				<a href="works/ottoottobre/" id=".w2" class="works_hover fadebtn tra">
+                	<p class="ttouch see title_3 tra">SEE PROJECT</p>
+					<div style="background-image:url(img_home/work_ottoottobre.jpg)" class="tra ttouch"></div>
+					<span class="ntouch">OTTO OTTOBRE</span>
+                	<div class="arrow-cool tra ntouch"></div>
+					<p class="text sub ntouch">Branding / Web design / Web development</p>
+				</a>
+			</li><li class="title_2 anim1">
+				<a href="works/orawine/" id=".w5" class="works_hover fadebtn tra">
+                	<p class="ttouch see title_3 tra">SEE PROJECT</p>
+					<div style="background-image:url(img_home/work_orawine.jpg)" class="tra ttouch"></div>
+					<span class="ntouch">ORA WINE</span>
+                	<div class="arrow-cool tra ntouch"></div>
+					<p class="text sub ntouch">Web design / Web development</p>
+				</a>
+			</li><li class="title_2 anim1">
+				<a href="works/forkdeli/" id=".w4" class="works_hover fadebtn tra">
+                	<p class="ttouch see title_3 tra">SEE PROJECT</p>
+					<div style="background-image:url(img_home/work_forkdeli.jpg)" class="tra ttouch"></div>
+					<span class="ntouch">FORK DELI</span>
+                	<div class="arrow-cool tra ntouch"></div>
+					<p class="text sub ntouch">Branding / Web design / Web development</p>
+				</a>
+			</li><li class="title_2 anim1">
+				<a href="works/aradesign/" id=".w3" class="works_hover fadebtn tra click-trigger" data-click-id="click-aradesign">
+                	<p class="ttouch see title_3 tra">SEE PROJECT</p>
+					<div style="background-image:url(img_home/work_aradesign.jpg)" class="tra ttouch"></div>
+					<span class="ntouch">ARA DESIGN</span>
+                	<div class="arrow-cool tra ntouch"></div>
+					<p class="text sub ntouch">Print / Web design / Web development</p>
+				</a>
+				
+			</li><li class="locat title_2 anim1">
+				<a href="works/margaroli/" id=".w6" class="works_hover fadebtn tra">
+                	<p class="ttouch see title_3 tra">SEE PROJECT</p>
+					<div style="background-image:url(img_home/work_margaroli.jpg)" class="tra ttouch"></div>
+					<span class="ntouch">MARGAROLI</span>
+                	<div class="arrow-cool tra ntouch"></div>
+					<p class="text sub ntouch">Web design / Web development</p>
+				</a>
+			</li>
+		</ul>
+		
+		<div class="tv nipad"></div>
+	    <div class="w1 w-bg nipad"></div>
+	    <div class="w2 w-bg nipad"></div>
+	    <div class="w3 w-bg nipad"></div>
+	    <div class="w4 w-bg nipad"></div>
+	    <div class="w5 w-bg nipad"></div>
+	    <div class="w6 w-bg nipad"></div>
+        
+	</div>
+	
+<!-- CONTACT -->
+	<div class="section" id="section6">
+		<p class="title_1">LET ME <br class="ttouch" />RELEASE<br class="ntouch"/> YOUR <br class="ttouch"/><span class="col_1">POTENTIALS</span>:<br/><span class="drop">DROP ME A LINE</span><span class="drop2">LET'S DO THIS!</span></p>
+			
+        <p class="whether text_2 sub">(Whether you have a project in mind <br class="ttouch"/>or you want to find out more about me)</p>
+		<a class="git mail text_2 tra click-trigger" data-click-id="click-email" href="mailto:hello@monginigraphics.me">hello@monginigraphics.me</a>
+        
+		<div class="footer">
+			<a class="text_2 sub tra instagram" target="_blank" href="https://www.instagram.com/monginigraphics/">Follow me on Instagram</a> <span>|</span>
+			<a class="text_2 tra sub" href="https://www.facebook.com/sharer.php?u=https://www.monginigraphics.me/" target="_blank">Share on Facebook</a> <span>|</span>
+			<a class="text_2 tra sub" href="https://www.linkedin.com/in/simone-mongini/" target="_blank">LinkedIn</a> <span>|</span>
+			<a class="text_2 tra sub fadebtn" href="privacy-policy.php">Privacy Policy</a> <span>|</span>
+			<a class="text_2 tra sub fadebtn" href="cookies.php">Cookies</a>
+			
+			<span class="text_2 sub">© 2022 MonginiGraphics</span><br class='yipad'/>
+		</div>
+		<a class="up uphome ntouch" href="#homepage"></a>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/animation.js"></script>
+<script>
+$.getJSON("https://freegeoip.net/json/", function (data) { if (data.country_name == 'Italy') { $(".locat").css('display','none'); }});
+// count clicks
+var clicks = document.querySelectorAll('.click-trigger'); // IE8
+for(var i = 0; i < clicks.length; i++){
+	clicks[i].onclick = function(){
+		var id = this.getAttribute('data-click-id');
+		var post = 'id='+id; // post string
+		var req = new XMLHttpRequest();
+		req.open('POST', 'php/counter.php', true);
+		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		req.onreadystatechange = function(){
+			if (req.readyState != 4 || req.status != 200) return; 
+			document.getElementById(id).innerHTML = req.responseText;
+			};
+		req.send(post);
+		}
+	}
+</script>
+</body>
+<script>'undefined'=== typeof _trfq || (window._trfq = []);'undefined'=== typeof _trfd && (window._trfd=[]),_trfd.push({'tccl.baseHost':'secureserver.net'}),_trfd.push({'ap':'cpsh'},{'server':'a2plcpnl0758'}) // Monitoring performance to make your website faster. If you want to opt-out, please contact web hosting support.</script><script src='https://img1.wsimg.com/tcc/tcc_l.combined.1.0.6.min.js'></script></html>

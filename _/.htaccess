@@ -1,0 +1,12 @@
+RewriteEngine On
+
+# Force HTTPS + www (301)
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} !^www\.yanjirestaurant\.com$ [NC]
+RewriteRule ^(.*)$ https://www.yanjirestaurant.com/$1 [R=301,L]
+
+# Privacy Policy redirect
+RewriteRule ^privacy-policy/?$ /privacy-policy.html [R=301,L]
+
+# Terms of Service redirect
+RewriteRule ^terms-of-service/?$ /terms-of-service.html [R=301,L]

@@ -1,0 +1,9 @@
+# Allow image files to be served
+<FilesMatch "\.(jpg|jpeg|png|gif|webp)$">
+  Allow from all
+</FilesMatch>
+
+# Prevent PHP files from being executed in this directory
+<FilesMatch "\.php$">
+  Deny from all
+</FilesMatch>
