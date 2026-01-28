@@ -133,11 +133,6 @@ class PaymentDashboard {
                 <td class="payment-method">${this.escapeHtml(payment.method || 'Unknown')}</td>
                 <td class="payment-date">${this.formatDate(payment.createdAt || payment.date)}</td>
                 <td class="actions">
-                    ${payment.status?.toLowerCase() !== 'refunded' ? `
-                        <button class="btn btn-danger btn-small" onclick="paymentDashboard.openRefundModal('${this.escapeHtml(payment.id)}', ${payment.amount || 0})">
-                            Refund
-                        </button>
-                    ` : '<span style="color: #888; font-size: 11px;">Refunded</span>'}
                     <button class="btn btn-secondary btn-small" onclick="paymentDashboard.viewPaymentDetails('${this.escapeHtml(payment.id)}')">
                         Details
                     </button>
@@ -156,61 +151,6 @@ class PaymentDashboard {
         document.getElementById('totalRevenue').textContent = `$${this.formatAmount(totalAmount)}`;
         document.getElementById('completedCount').textContent = completed;
         document.getElementById('refundedCount').textContent = refunded;
-    }
-
-    openRefundModal(paymentId, amount) {
-        document.getElementById('refundPaymentId').value = paymentId;
-        document.getElementById('refundAmount').value = amount;
-        document.getElementById('refundAmount').max = amount;
-        document.getElementById('refundReason').value = '';
-        document.getElementById('refundNotes').value = '';
-
-        this.selectedRefund = { paymentId, amount };
-        this.openModal('refundModal');
-    }
-
-    async submitRefund() {
-        if (!this.selectedRefund) return;
-
-        const amount = parseFloat(document.getElementById('refundAmount').value);
-        const reason = document.getElementById('refundReason').value;
-        const notes = document.getElementById('refundNotes').value;
-
-        if (!amount || amount <= 0 || amount > this.selectedRefund.amount) {
-            alert('Please enter a valid refund amount');
-            return;
-        }
-
-        if (!reason) {
-            alert('Please select a reason for the refund');
-            return;
-        }
-
-        try {
-            const response = await fetch(`${this.apiBaseUrl}/payments/${this.selectedRefund.paymentId}/refund`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    amount,
-                    reason,
-                    notes
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error(`Refund failed: ${response.status}`);
-            }
-
-            alert('✓ Refund processed successfully!');
-            this.closeModal('refundModal');
-            this.loadPayments();
-        } catch (error) {
-            console.error('Error processing refund:', error);
-            alert('Error processing refund: ' + error.message);
-        }
     }
 
     viewPaymentDetails(paymentId) {

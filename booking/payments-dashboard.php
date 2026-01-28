@@ -433,45 +433,6 @@
     </div>
   </div>
 
-  <!-- Refund Modal -->
-  <div id="refundModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Refund Payment</h2>
-        <button class="close-btn" onclick="paymentDashboard.closeModal('refundModal')">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Payment ID</label>
-          <input type="text" id="refundPaymentId" readonly>
-        </div>
-        <div class="form-group">
-          <label>Amount to Refund</label>
-          <input type="number" id="refundAmount" step="0.01" min="0" placeholder="Amount">
-        </div>
-        <div class="form-group">
-          <label>Reason for Refund</label>
-          <select id="refundReason">
-            <option value="">Select a reason...</option>
-            <option value="customer_request">Customer Request</option>
-            <option value="duplicate_charge">Duplicate Charge</option>
-            <option value="order_cancelled">Order Cancelled</option>
-            <option value="incorrect_amount">Incorrect Amount</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Notes</label>
-          <textarea id="refundNotes" placeholder="Add any additional notes..."></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="paymentDashboard.closeModal('refundModal')">Cancel</button>
-        <button class="btn btn-danger" onclick="paymentDashboard.submitRefund()">Process Refund</button>
-      </div>
-    </div>
-  </div>
-
   <script src="payments-dashboard.js"></script>
 </body>
 </html>
