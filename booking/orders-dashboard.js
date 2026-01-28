@@ -65,6 +65,30 @@ class OrderDashboard {
         });
     }
 
+    // Helper function to get table name from ID
+    getTableName(tableId) {
+        if (!tableId) return 'N/A';
+        
+        // Check if we have table data
+        const tableConfig = this.tables.find(t => t.table && t.table.id === tableId);
+        if (tableConfig && tableConfig.table && tableConfig.table.name) {
+            return tableConfig.table.name;
+        }
+        
+        // Fallback: try to convert numeric IDs like 81->8A, 82->8B
+        const str = String(tableId);
+        if (str.length === 2) {
+            const base = str[0]; // e.g., "8"
+            const suffix = parseInt(str[1], 10); // e.g., 1
+            if (suffix === 1) return base + 'A';
+            if (suffix === 2) return base + 'B';
+            if (suffix === 3) return base + 'C';
+            if (suffix === 4) return base + 'D';
+        }
+        
+        return String(tableId);
+    }
+
     // Helper function to safely extract price from item (works with objects and strings)
     getItemPrice(item) {
         if (!item) return 0;
@@ -408,6 +432,7 @@ class OrderDashboard {
         const platform = order.platform || 'web';
         const orderType = order.orderType || 'dine_in';
         const tableNumber = order.tableNumber || 'N/A';
+        const tableName = this.getTableName(tableNumber);  // Get display name
         const deliveryAddress = order.deliveryAddress || 'N/A';
         const kitchenNotes = order.kitchenNotes || '';
 
@@ -433,7 +458,7 @@ class OrderDashboard {
                     ${orderType === 'dine_in' ? `
                         <div class="detail">
                             <div class="detail-label">Table</div>
-                            <div class="detail-value">${tableNumber}</div>
+                            <div class="detail-value">${tableName}</div>
                         </div>
                     ` : `
                         <div class="detail">
