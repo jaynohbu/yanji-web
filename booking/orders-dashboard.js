@@ -420,7 +420,7 @@ class OrderDashboard {
 
                 <div class="order-actions">
                     ${order.status !== 'completed' && order.status !== 'cancelled' ? `
-                        <button class="btn btn-warning btn-small" onclick="dashboard.openPaymentModal('${order.orderId}')">💳 Payment</button>
+                        ${order.paymentStatus !== 'completed' ? `<button class="btn btn-warning btn-small" onclick="dashboard.openPaymentModal('${order.orderId}')">💳 Payment</button>` : ''}
                         <button class="btn btn-success btn-small" onclick="dashboard.completeOrder('${order.orderId}')" ${order.paymentStatus !== 'completed' ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>✓ Complete</button>
                         <button class="btn btn-secondary btn-small" onclick="dashboard.editOrder('${order.orderId}')">✏️ Edit</button>
                         <button class="btn btn-danger btn-small" onclick="dashboard.cancelOrder('${order.orderId}')">✕ Cancel</button>
