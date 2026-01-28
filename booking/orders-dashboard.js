@@ -687,7 +687,7 @@ class OrderDashboard {
 
         try {
             const response = await fetch(`${this.apiBaseUrl}/orders/${orderId}`, {
-                method: 'PATCH',
+                method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: 'completed' })
             });
