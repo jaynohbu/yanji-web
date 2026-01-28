@@ -538,16 +538,32 @@
   <div class="modal" id="paymentModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>Process Payment</h2>
+        <h2 style="color: #ffffff;">Process Payment</h2>
         <button class="close-btn" onclick="closeModal('paymentModal')">&times;</button>
       </div>
       
       <!-- Payment Method Selection -->
       <div id="paymentMethodSection" style="display: none;">
-        <div class="form-group">
-          <label>Amount (£) *</label>
-          <input type="number" id="paymentAmount" step="0.01" readonly style="background: #f5f5f5;">
+        <!-- Payment Breakdown -->
+        <div class="form-group" style="background: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 20px; color: #000000;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #ddd;">
+            <span>Subtotal:</span>
+            <span>£<span id="breakdownSubtotal" style="color: #000000;">0.00</span></span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #ddd;">
+            <span>Service Charge (15%):</span>
+            <span>£<span id="breakdownServiceCharge" style="color: #000000;">0.00</span></span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #ddd;">
+            <span>VAT (20%):</span>
+            <span>£<span id="breakdownVAT" style="color: #000000;">0.00</span></span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; color: #000000;">
+            <span>Total Amount:</span>
+            <span>£<span id="paymentAmountDisplay" style="color: #000000;">0.00</span></span>
+          </div>
         </div>
+        
         <div class="form-group">
           <label>Select Payment Method *</label>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
@@ -562,10 +578,29 @@
 
       <!-- Cash Payment Form -->
       <form id="cashPaymentForm" onsubmit="dashboard.processCashPayment(event)" style="display: none;">
-        <div class="form-group">
-          <label>Order Total (£) *</label>
-          <input type="number" id="cashOrderTotal" step="0.01" readonly style="background: #f5f5f5;">
+        <!-- Hidden field to store total amount and orderId -->
+        <input type="hidden" id="cashOrderTotal" />
+        
+        <!-- Payment Breakdown for Cash -->
+        <div class="form-group" style="background: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 20px; color: #000000;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #ddd;">
+            <span>Subtotal:</span>
+            <span>£<span id="cashBreakdownSubtotal" style="color: #000000;">0.00</span></span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #ddd;">
+            <span>Service Charge (15%):</span>
+            <span>£<span id="cashBreakdownServiceCharge" style="color: #000000;">0.00</span></span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #ddd;">
+            <span>VAT (20%):</span>
+            <span>£<span id="cashBreakdownVAT" style="color: #000000;">0.00</span></span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; color: #000000;">
+            <span>Total Amount:</span>
+            <span>£<span id="cashBreakdownTotal" style="color: #000000;">0.00</span></span>
+          </div>
         </div>
+        
         <div class="form-group">
           <label>Amount Received (£) *</label>
           <input type="number" id="cashAmountReceived" step="0.01" required placeholder="Enter amount received" oninput="dashboard.calculateChange()">

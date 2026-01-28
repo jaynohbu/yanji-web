@@ -420,6 +420,7 @@ class OrderDashboard {
 
                 <div class="order-actions">
                     ${order.status !== 'completed' && order.status !== 'cancelled' ? `
+                        ${order.status !== 'preparing' ? `<button class="btn btn-info btn-small" onclick="dashboard.updateOrderStatus('${order.orderId}', 'preparing')">🔄 Preparing</button>` : ''}
                         <button class="btn btn-warning btn-small" onclick="dashboard.openPaymentModal('${order.orderId}')">💳 Payment</button>
                         <button class="btn btn-success btn-small" onclick="dashboard.completeOrder('${order.orderId}')">✓ Complete</button>
                         <button class="btn btn-secondary btn-small" onclick="dashboard.editOrder('${order.orderId}')">✏️ Edit</button>
@@ -619,6 +620,35 @@ class OrderDashboard {
         this.openOrderModal(orderId);
     }
 
+    async updateOrderStatus(orderId, status) {
+        const statusLabels = {
+            pending: 'Pending',
+            preparing: 'Preparing',
+            ready: 'Ready',
+            completed: 'Completed',
+            cancelled: 'Cancelled'
+        };
+
+        const confirm_msg = `Mark order as ${statusLabels[status]}?`;
+        if (!confirm(confirm_msg)) return;
+
+        try {
+            const response = await fetch(`${this.apiBaseUrl}/orders/${orderId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: status })
+            });
+
+            if (!response.ok) throw new Error('Failed to update order status');
+
+            this.showToast(`Order marked as ${statusLabels[status]}!`);
+            this.loadOrders();
+        } catch (error) {
+            console.error('Error updating order status:', error);
+            this.showToast('Error updating order: ' + error.message, 'error');
+        }
+    }
+
     async completeOrder(orderId) {
         if (!confirm('Mark this order as completed?')) return;
 
@@ -668,8 +698,19 @@ class OrderDashboard {
         const vat = (subtotal + serviceCharge) * 0.20;
         const total = subtotal + serviceCharge + vat;
 
-        document.getElementById('paymentAmount').value = total.toFixed(2);
-        document.getElementById('paymentAmount').dataset.orderId = orderId;
+        // Update breakdown display
+        document.getElementById('breakdownSubtotal').textContent = subtotal.toFixed(2);
+        document.getElementById('breakdownServiceCharge').textContent = serviceCharge.toFixed(2);
+        document.getElementById('breakdownVAT').textContent = vat.toFixed(2);
+        document.getElementById('paymentAmountDisplay').textContent = total.toFixed(2);
+        
+        // Store orderId and total for later use
+        const cashOrderTotalField = document.getElementById('cashOrderTotal');
+        if (cashOrderTotalField) {
+            cashOrderTotalField.value = total.toFixed(2);
+            cashOrderTotalField.dataset.orderId = orderId;
+        }
+        
         document.getElementById('paymentMethodSection').style.display = 'block';
         document.getElementById('cashPaymentForm').style.display = 'none';
         document.getElementById('paymentModal').classList.add('active');
@@ -680,11 +721,33 @@ class OrderDashboard {
             // Redirect to checkout payment page
             this.handlePaymentRedirect();
         } else if (method === 'cash') {
-            // Show cash payment form
+            // Show cash payment form with breakdown
             document.getElementById('paymentMethodSection').style.display = 'none';
             document.getElementById('cashPaymentForm').style.display = 'block';
-            const amount = document.getElementById('paymentAmount').value;
-            document.getElementById('cashOrderTotal').value = amount;
+            
+            // Get orderId from the hidden field (it was stored in openPaymentModal)
+            const cashOrderTotalField = document.getElementById('cashOrderTotal');
+            const orderId = cashOrderTotalField?.dataset.orderId;
+            
+            // Update cash form breakdown with same values as selection screen
+            const subtotal = document.getElementById('breakdownSubtotal').textContent;
+            const serviceCharge = document.getElementById('breakdownServiceCharge').textContent;
+            const vat = document.getElementById('breakdownVAT').textContent;
+            const total = document.getElementById('paymentAmountDisplay').textContent;
+            
+            document.getElementById('cashBreakdownSubtotal').textContent = subtotal;
+            document.getElementById('cashBreakdownServiceCharge').textContent = serviceCharge;
+            document.getElementById('cashBreakdownVAT').textContent = vat;
+            document.getElementById('cashBreakdownTotal').textContent = total;
+            
+            // Preserve orderId when updating value
+            if (cashOrderTotalField) {
+                cashOrderTotalField.value = total;
+                if (orderId) {
+                    cashOrderTotalField.dataset.orderId = orderId;
+                }
+            }
+            
             document.getElementById('cashAmountReceived').value = '';
             document.getElementById('changeDisplay').style.display = 'none';
         }
@@ -719,12 +782,23 @@ class OrderDashboard {
     async processCashPayment(event) {
         event.preventDefault();
 
-        const orderId = document.getElementById('paymentAmount').dataset.orderId;
-        const totalAmount = parseFloat(document.getElementById('cashOrderTotal').value);
+        const cashOrderTotalField = document.getElementById('cashOrderTotal');
+        const orderId = cashOrderTotalField?.dataset.orderId;
+        const totalAmount = parseFloat(cashOrderTotalField?.value);
         const amountReceived = parseFloat(document.getElementById('cashAmountReceived').value);
         const staffNotes = document.getElementById('staffNotes').value;
 
-        if (!amountReceived || amountReceived < totalAmount) {
+        if (!orderId) {
+            this.showToast('Order information missing', 'error');
+            return;
+        }
+
+        if (!amountReceived) {
+            this.showToast('Please enter the amount received', 'error');
+            return;
+        }
+
+        if (amountReceived < totalAmount) {
             this.showToast('Amount received must be at least £' + totalAmount.toFixed(2), 'error');
             return;
         }
@@ -785,8 +859,9 @@ class OrderDashboard {
     }
 
     async handlePaymentRedirect() {
-        const amount = parseFloat(document.getElementById('paymentAmount').value);
-        const orderId = document.getElementById('paymentAmount').dataset.orderId;
+        const cashOrderTotalField = document.getElementById('cashOrderTotal');
+        const amount = parseFloat(cashOrderTotalField?.value);
+        const orderId = cashOrderTotalField?.dataset.orderId;
 
         if (!amount || !orderId) {
             this.showToast('Invalid payment information', 'error');
