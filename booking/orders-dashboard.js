@@ -798,6 +798,8 @@ class OrderDashboard {
         const vat = (subtotal + serviceCharge) * 0.20;
         const total = subtotal + serviceCharge + vat;
 
+        console.log('Refund calc:', {subtotal, serviceCharge, vat, total});
+
         // Store orderId in hidden field for form submission
         this.refundingOrderId = orderId;
 
@@ -809,7 +811,13 @@ class OrderDashboard {
         document.getElementById('cashRefundSubtotal').textContent = subtotal.toFixed(2);
         document.getElementById('cashRefundServiceCharge').textContent = serviceCharge.toFixed(2);
         document.getElementById('cashRefundVAT').textContent = vat.toFixed(2);
-        document.getElementById('cashRefundTotal').textContent = total.toFixed(2);
+        
+        // Explicitly set total - ensure it's not empty
+        const totalElement = document.getElementById('cashRefundTotal');
+        if (totalElement) {
+            totalElement.textContent = total.toFixed(2);
+            totalElement.innerHTML = total.toFixed(2);  // Double-check with innerHTML
+        }
 
         // Show cash refund form
         document.getElementById('refundMethodSelection').style.display = 'none';
