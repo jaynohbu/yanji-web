@@ -345,7 +345,11 @@ class OrderDashboard {
 
         const createdDate = order.createdAt ? new Date(order.createdAt).toLocaleString() : 'N/A';
         const subtotal = Array.isArray(order.items) 
-            ? order.items.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0)
+            ? order.items.reduce((sum, item) => {
+                const price = typeof item === 'string' ? 0 : (parseFloat(item.price) || 0);
+                const qty = typeof item === 'string' ? 1 : (item.quantity || 1);
+                return sum + (price * qty);
+            }, 0)
             : 0;
         const serviceCharge = subtotal * 0.15;
         const vat = (subtotal + serviceCharge) * 0.20;
@@ -754,7 +758,11 @@ class OrderDashboard {
 
         // Calculate totals
         const subtotal = Array.isArray(order.items)
-            ? order.items.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0)
+            ? order.items.reduce((sum, item) => {
+                const price = typeof item === 'string' ? 0 : (parseFloat(item.price) || 0);
+                const qty = typeof item === 'string' ? 1 : (item.quantity || 1);
+                return sum + (price * qty);
+            }, 0)
             : 0;
         const serviceCharge = subtotal * 0.15;
         const vat = (subtotal + serviceCharge) * 0.20;
