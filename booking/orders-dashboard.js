@@ -714,6 +714,24 @@ class OrderDashboard {
         if (!(await this.showConfirm('Cancel this order?', 'Cancel Order'))) return;
 
         try {
+            const order = this.orders.find(o => o.orderId === orderId);
+            
+            // If order is paid, handle refund based on payment method
+            if (order && order.paymentStatus === 'completed') {
+                const paymentMethod = order.paymentMethod || 'unknown';
+                
+                // For card/wallet payments, process automatic refund
+                if (['credit_card', 'apple_pay', 'google_pay'].includes(paymentMethod)) {
+                    // Process automatic refund to Square
+                    await this.processCardRefund(orderId, order);
+                } else if (paymentMethod === 'cash') {
+                    // For cash, show refund interface
+                    this.openRefundModal(orderId);
+                    return; // Don't cancel order yet, wait for refund completion
+                }
+            }
+
+            // Cancel the order
             const response = await fetch(`${this.apiBaseUrl}/orders/${orderId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -727,6 +745,114 @@ class OrderDashboard {
         } catch (error) {
             console.error('Error cancelling order:', error);
             this.showToast('Error cancelling order: ' + error.message, 'error');
+        }
+    }
+
+    openRefundModal(orderId) {
+        const order = this.orders.find(o => o.orderId === orderId);
+        if (!order || !order.items) return;
+
+        // Calculate totals
+        const subtotal = Array.isArray(order.items)
+            ? order.items.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0)
+            : 0;
+        const serviceCharge = subtotal * 0.15;
+        const vat = (subtotal + serviceCharge) * 0.20;
+        const total = subtotal + serviceCharge + vat;
+
+        // Store orderId in hidden field for form submission
+        this.refundingOrderId = orderId;
+
+        // Update breakdowns
+        document.getElementById('refundBreakdownSubtotal').textContent = subtotal.toFixed(2);
+        document.getElementById('refundBreakdownServiceCharge').textContent = serviceCharge.toFixed(2);
+        document.getElementById('refundBreakdownVAT').textContent = vat.toFixed(2);
+        document.getElementById('refundAmountDisplay').textContent = total.toFixed(2);
+        document.getElementById('cashRefundSubtotal').textContent = subtotal.toFixed(2);
+        document.getElementById('cashRefundServiceCharge').textContent = serviceCharge.toFixed(2);
+        document.getElementById('cashRefundVAT').textContent = vat.toFixed(2);
+        document.getElementById('cashRefundTotal').textContent = total.toFixed(2);
+
+        // Show cash refund form
+        document.getElementById('refundMethodSelection').style.display = 'none';
+        document.getElementById('cashRefundForm').style.display = 'block';
+        document.getElementById('cashRefundAmount').value = '';
+        document.getElementById('refundStaffNotes').value = '';
+
+        // Open modal
+        const modal = document.getElementById('refundModal');
+        modal.classList.add('active');
+    }
+
+    async processCardRefund(orderId, order) {
+        try {
+            // Get payment details from order
+            const paymentId = order.paymentId;
+            if (!paymentId) {
+                throw new Error('No payment ID found for refund');
+            }
+
+            // Send refund request to backend
+            const refundResponse = await fetch(`${this.apiBaseUrl}/payments/${paymentId}/refund`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    reason: 'Order cancelled by staff'
+                })
+            });
+
+            if (!refundResponse.ok) {
+                const errorData = await refundResponse.json();
+                throw new Error(errorData.message || 'Failed to process refund');
+            }
+
+            const refundData = await refundResponse.json();
+            this.showToast(`✅ Refund processed successfully. Refund ID: ${refundData.refundId}`, 'success');
+        } catch (error) {
+            console.error('Error processing card refund:', error);
+            this.showToast('❌ Refund failed: ' + error.message, 'error');
+            throw error; // Re-throw to prevent order cancellation if refund fails
+        }
+    }
+
+    async processCashRefund(event) {
+        event.preventDefault();
+
+        const refundAmount = parseFloat(document.getElementById('cashRefundAmount').value);
+        const notes = document.getElementById('refundStaffNotes').value;
+        const orderId = this.refundingOrderId;
+
+        if (!orderId) {
+            this.showToast('Error: Order ID not found', 'error');
+            return;
+        }
+
+        if (isNaN(refundAmount) || refundAmount <= 0) {
+            this.showToast('Please enter a valid refund amount', 'error');
+            return;
+        }
+
+        try {
+            // Update order with refund details
+            const response = await fetch(`${this.apiBaseUrl}/orders/${orderId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    status: 'cancelled',
+                    refundAmount: refundAmount,
+                    refundMethod: 'cash',
+                    refundNotes: notes
+                })
+            });
+
+            if (!response.ok) throw new Error('Failed to process refund');
+
+            this.showToast(`✅ Cash refund processed. Amount: £${refundAmount.toFixed(2)}`, 'success');
+            this.closeModal('refundModal');
+            this.loadOrders();
+        } catch (error) {
+            console.error('Error processing cash refund:', error);
+            this.showToast('Error processing refund: ' + error.message, 'error');
         }
     }
 

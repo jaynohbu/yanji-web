@@ -669,6 +669,84 @@
     </div>
   </div>
 
+  <!-- Refund Modal -->
+  <div class="modal" id="refundModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Process Refund</h2>
+        <button type="button" class="close-btn" onclick="dashboard.closeModal('refundModal')">&times;</button>
+      </div>
+
+      <!-- Initial Refund Method Selection -->
+      <form id="refundMethodSelection" style="display: none;">
+        <div class="form-group" style="background: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 20px; color: #000000;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #ddd;">
+            <span>Subtotal:</span>
+            <span>£<span id="refundBreakdownSubtotal" style="color: #000000;">0.00</span></span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #ddd;">
+            <span>Service Charge (15%):</span>
+            <span>£<span id="refundBreakdownServiceCharge" style="color: #000000;">0.00</span></span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #ddd;">
+            <span>VAT (20%):</span>
+            <span>£<span id="refundBreakdownVAT" style="color: #000000;">0.00</span></span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; color: #000000;">
+            <span>Refund Amount:</span>
+            <span>£<span id="refundAmountDisplay" style="color: #000000;">0.00</span></span>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Refund Reason *</label>
+          <textarea id="refundReason" placeholder="Reason for refund..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; resize: vertical;" required></textarea>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary" onclick="dashboard.closeModal('refundModal')">Cancel</button>
+          <button type="submit" class="btn btn-danger">Process Refund</button>
+        </div>
+      </form>
+
+      <!-- Cash Refund Form -->
+      <form id="cashRefundForm" onsubmit="dashboard.processCashRefund(event)" style="display: none;">
+        <input type="hidden" id="cashRefundTotal" />
+        
+        <div class="form-group" style="background: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 20px; color: #000000;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #ddd;">
+            <span>Subtotal:</span>
+            <span>£<span id="cashRefundSubtotal" style="color: #000000;">0.00</span></span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #ddd;">
+            <span>Service Charge (15%):</span>
+            <span>£<span id="cashRefundServiceCharge" style="color: #000000;">0.00</span></span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #ddd;">
+            <span>VAT (20%):</span>
+            <span>£<span id="cashRefundVAT" style="color: #000000;">0.00</span></span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; color: #000000;">
+            <span>Total Refund:</span>
+            <span>£<span id="cashRefundTotal" style="color: #000000;">0.00</span></span>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Amount Refunded (£) *</label>
+          <input type="number" id="cashRefundAmount" step="0.01" required placeholder="Enter amount refunded">
+        </div>
+        <div class="form-group">
+          <label>Staff Notes (Optional)</label>
+          <textarea id="refundStaffNotes" placeholder="Reason for refund..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; resize: vertical;"></textarea>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary" onclick="dashboard.closeModal('refundModal')">Cancel</button>
+          <button type="submit" class="btn btn-danger">Complete Refund</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="./orders-dashboard.js"></script>
 </body>
 </html>
