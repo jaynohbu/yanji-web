@@ -420,7 +420,6 @@ class OrderDashboard {
 
                 <div class="order-actions">
                     ${order.status !== 'completed' && order.status !== 'cancelled' ? `
-                        ${order.status !== 'preparing' ? `<button class="btn btn-info btn-small" onclick="dashboard.updateOrderStatus('${order.orderId}', 'preparing')">🔄 Preparing</button>` : ''}
                         <button class="btn btn-warning btn-small" onclick="dashboard.openPaymentModal('${order.orderId}')">💳 Payment</button>
                         <button class="btn btn-success btn-small" onclick="dashboard.completeOrder('${order.orderId}')">✓ Complete</button>
                         <button class="btn btn-secondary btn-small" onclick="dashboard.editOrder('${order.orderId}')">✏️ Edit</button>
@@ -827,11 +826,12 @@ class OrderDashboard {
 
             const payment = await paymentResponse.json();
 
-            // Update order with payment status
+            // Update order with payment status and mark as preparing
             const updateResponse = await fetch(`${API_BASE}/orders/${orderId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
+                    status: 'preparing',
                     paymentStatus: 'completed',
                     paymentMethod: 'cash',
                     paymentId: payment.paymentId || payment.id

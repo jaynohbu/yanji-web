@@ -780,6 +780,7 @@
               items: cartData.items,
               comments: cartData.comments || '',
               totalAmount: totalAmount,
+              status: 'preparing',
               paymentMethod: 'card',
               paymentId: payment.paymentId,
               paymentStatus: 'completed'
@@ -793,11 +794,12 @@
           const order = await orderResponse.json();
           showSuccess('Credit card payment processed successfully!', order.orderId, 'Card');
         } else {
-          // Update existing order with payment
+          // Update existing order with payment and mark as preparing
           const updateResponse = await fetch(`${API_BASE}/orders/${orderId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+              status: 'preparing',
               paymentMethod: 'card',
               paymentId: payment.paymentId,
               paymentStatus: 'completed'
