@@ -711,7 +711,7 @@
 
       <!-- Cash Refund Form -->
       <form id="cashRefundForm" onsubmit="dashboard.processCashRefund(event)" style="display: none;">
-        <input type="hidden" id="cashRefundTotal" />
+        <input type="hidden" id="cashRefundTotalValue" />
         
         <div class="form-group" style="background: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 20px; color: #000000;">
           <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #ddd;">

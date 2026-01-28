@@ -815,13 +815,23 @@ class OrderDashboard {
 
     openRefundModal(orderId) {
         const order = this.orders.find(o => o.orderId === orderId);
-        if (!order || !order.items) return;
+        if (!order) return;
 
-        // Calculate totals
-        const subtotal = this.calculateSubtotal(order.items);
-        const serviceCharge = subtotal * 0.15;
-        const vat = (subtotal + serviceCharge) * 0.20;
-        const total = subtotal + serviceCharge + vat;
+        // Use order's totalAmount directly instead of calculating
+        const total = order.totalAmount || 0;
+        
+        // Extract subtotal, serviceCharge, VAT from order if available
+        // Otherwise calculate from items
+        let subtotal = order.subtotal || 0;
+        let serviceCharge = order.serviceCharge || 0;
+        let vat = order.vat || 0;
+        
+        // If subtotal is not provided, calculate it
+        if (subtotal === 0 && order.items) {
+            subtotal = this.calculateSubtotal(order.items);
+            serviceCharge = subtotal * 0.15;
+            vat = (subtotal + serviceCharge) * 0.20;
+        }
 
         console.log('Refund calc:', {subtotal, serviceCharge, vat, total});
 
@@ -837,11 +847,16 @@ class OrderDashboard {
         document.getElementById('cashRefundServiceCharge').textContent = serviceCharge.toFixed(2);
         document.getElementById('cashRefundVAT').textContent = vat.toFixed(2);
         
-        // Explicitly set total - ensure it's not empty
-        const totalElement = document.getElementById('cashRefundTotal');
-        if (totalElement) {
-            totalElement.textContent = total.toFixed(2);
-            totalElement.innerHTML = total.toFixed(2);  // Double-check with innerHTML
+        // Set the total display value
+        const totalDisplayElement = document.querySelector('#cashRefundForm #cashRefundTotal');
+        if (totalDisplayElement) {
+            totalDisplayElement.textContent = total.toFixed(2);
+        }
+        
+        // Also set hidden input with total value
+        const hiddenTotalElement = document.getElementById('cashRefundTotalValue');
+        if (hiddenTotalElement) {
+            hiddenTotalElement.value = total.toFixed(2);
         }
 
         // Show cash refund form
