@@ -888,7 +888,7 @@ class OrderDashboard {
             this.showToast(`✅ Cash payment processed successfully. Change: £${change.toFixed(2)}`, 'success');
             
             // Close modal and refresh orders
-            closeModal('paymentModal');
+            this.closeModal('paymentModal');
             
             // Wait a moment then reload orders
             setTimeout(() => {
