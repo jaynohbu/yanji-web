@@ -462,6 +462,7 @@
     <header>
       <h1>Orders</h1>
       <div class="header-right">
+        <a href="payments-dashboard.php" class="btn btn-secondary" style="text-decoration: none;">💳 Payments</a>
         <button class="btn btn-primary" id="addOrderBtn">+ New Order</button>
       </div>
     </header>
