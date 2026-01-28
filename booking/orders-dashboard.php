@@ -541,29 +541,49 @@
         <h2>Process Payment</h2>
         <button class="close-btn" onclick="closeModal('paymentModal')">&times;</button>
       </div>
-      <form id="paymentForm">
-        <div class="form-group">
-          <label>Payment Method *</label>
-          <select id="paymentMethod" required>
-            <option value="">Select Method</option>
-            <option value="card">Card</option>
-            <option value="cash">Cash</option>
-            <option value="online">Online</option>
-          </select>
-        </div>
+      
+      <!-- Payment Method Selection -->
+      <div id="paymentMethodSection" style="display: none;">
         <div class="form-group">
           <label>Amount (£) *</label>
-          <input type="number" id="paymentAmount" step="0.01" required>
+          <input type="number" id="paymentAmount" step="0.01" readonly style="background: #f5f5f5;">
         </div>
         <div class="form-group">
-          <label>Notes</label>
-          <textarea id="paymentNotes" placeholder="Payment notes..."></textarea>
+          <label>Select Payment Method *</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button type="button" class="btn btn-success" onclick="dashboard.selectPaymentMethod('credit_card')" style="margin: 0;">💳 Credit Card</button>
+            <button type="button" class="btn btn-success" onclick="dashboard.selectPaymentMethod('cash')" style="margin: 0;">💵 Cash</button>
+          </div>
         </div>
         <div class="btn-group">
           <button type="button" class="btn btn-secondary" onclick="closeModal('paymentModal')">Cancel</button>
-          <button type="submit" class="btn btn-success">Confirm Payment</button>
+        </div>
+      </div>
+
+      <!-- Cash Payment Form -->
+      <form id="cashPaymentForm" onsubmit="dashboard.processCashPayment(event)" style="display: none;">
+        <div class="form-group">
+          <label>Order Total (£) *</label>
+          <input type="number" id="cashOrderTotal" step="0.01" readonly style="background: #f5f5f5;">
+        </div>
+        <div class="form-group">
+          <label>Amount Received (£) *</label>
+          <input type="number" id="cashAmountReceived" step="0.01" required placeholder="Enter amount received" oninput="dashboard.calculateChange()">
+        </div>
+        <div class="form-group">
+          <label>Staff Notes (Optional)</label>
+          <textarea id="staffNotes" placeholder="Add any notes about the payment..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; resize: vertical;"></textarea>
+        </div>
+        <div class="form-group" id="changeDisplay" style="display: none;">
+          <label>Change (£)</label>
+          <input type="number" id="changeAmount" readonly style="background: #f5f5f5; color: #27ae60; font-weight: bold;">
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary" onclick="dashboard.cancelPaymentMethod()">Back</button>
+          <button type="submit" class="btn btn-success">Complete Cash Payment</button>
         </div>
       </form>
+
     </div>
   </div>
 

@@ -1070,14 +1070,6 @@
         return;
       }
 
-      const placeOrderBtn = document.getElementById('place-order-btn');
-      const msgDiv = document.getElementById('order-message');
-      
-      // Disable button during submission
-      placeOrderBtn.disabled = true;
-      placeOrderBtn.textContent = 'Placing Order...';
-      msgDiv.innerHTML = '';
-
       try {
         // Calculate total with service charge and VAT
         let subtotal = 0;
@@ -1089,49 +1081,25 @@
         const vat = subtotalWithService * 0.20;
         const totalAmount = subtotalWithService + vat;
 
-        const orderData = {
-          tableNumber: tableNumber,
+        // Prepare cart data for payment page (store in sessionStorage, not URL)
+        const cartData = {
           items: cart,
-          comments: window.orderComments || '',
-          totalAmount: Math.round(totalAmount * 100) / 100, // Round to 2 decimal places
+          comments: window.orderComments || ''
         };
 
-        const response = await fetch(`${API_BASE}/orders`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(orderData),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.message || 'Failed to place order');
-        }
-
-        // Success
-        msgDiv.innerHTML = `<div style="color: #4CAF50; padding: 10px; background: #e8f5e9; border-radius: 4px; margin-bottom: 10px;">✓ ${data.message}<br>Order ID: ${data.orderId.slice(0, 8)}</div>`;
+        // Store payment data securely in sessionStorage
+        sessionStorage.setItem('paymentData', JSON.stringify({
+          source: 'menu',
+          tableNumber: tableNumber,
+          totalAmount: totalAmount,
+          cartData: cartData
+        }));
         
-        // Clear cart
-        cart = [];
-        localStorage.removeItem('yanji-cart');
-        localStorage.removeItem('yanji-order-comments');
-        window.orderComments = '';
-        updateCartCount();
-        renderCart();
-
-        // Close modal after 2 seconds
-        setTimeout(() => {
-          closeCartModal();
-        }, 2000);
+        closeCartModal();
+        window.location.href = 'checkout-payment.php';
 
       } catch (error) {
-        msgDiv.innerHTML = `<div style="color: #f44336; padding: 10px; background: #ffebee; border-radius: 4px; margin-bottom: 10px;">✗ Error: ${error.message}</div>`;
-        showToast('Order failed: ' + error.message, true);
-      } finally {
-        placeOrderBtn.disabled = false;
-        placeOrderBtn.textContent = 'Place Order';
+        showToast('Error preparing payment: ' + error.message, true);
       }
     }
 

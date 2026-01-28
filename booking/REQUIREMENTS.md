@@ -475,13 +475,84 @@ interface MenuResponse {
 }
 ```
 
-### 9.5 Shopping Cart
+### 9.5 Shopping Cart & Payment Flow
 
-The shopping cart is **only functional** when accessed with the `?table` query parameter:
+**Cart Functionality:**
+- The shopping cart is **only functional** when accessed with the `?table` query parameter
 - Users can add items to cart
 - Cart displays subtotal, VAT (20%), and total
 - Cart data persists in localStorage
 - Cart button shows item count
+
+**Checkout Process:**
+When customers click "Place Order", they are redirected to a dedicated payment processor page with the following flow:
+
+1. **Payment Method Selection**: User selects either "Credit Card" or "Cash"
+2. **Credit Card Flow**:
+   - Display manual card input form (no wallet integration)
+   - Fields: Cardholder Name, Card Number, Expiry Date, CVV, Billing Address
+   - Submit payment via `POST /payments/intent` API
+   - Create order with payment reference via `POST /orders`
+3. **Cash Flow**:
+   - Display amount received input
+   - Show change calculation
+   - Optional staff notes field
+   - Submit payment via `POST /payments/intent` API
+   - Create order with payment reference
+
+**Payment Processor Page:** `checkout-payment.php`
+- Accessible from both `menu.php` (customer checkout) and `orders-dashboard.php` (staff payment processing)
+- URL parameters: `?source=menu|dashboard&table=N&amount=X.XX&cart=...` (for menu) or `?source=dashboard&orderId=X&amount=X.XX` (for dashboard)
+- Handles payment method selection and processing
+- Updates both `yanji-orders` and `yanji-payments` tables upon successful payment
+- Auto-redirects after payment completion
+
+---
+
+## 10. Payment System
+
+### 10.1 Payment Methods
+
+Two payment methods are supported:
+1. **Credit Card** - Manual card input form
+2. **Cash** - Amount received and change calculation
+
+### 10.2 Payment Flow
+
+```
+Customer/Staff → Cart/Order → "Place Order"/"Pay" → 
+  → Redirect to checkout-payment.php → 
+  → Select Payment Method → 
+  → Enter Payment Details → 
+  → Process Payment (create payment record) → 
+  → Create/Update Order → 
+  → Success Notification → 
+  → Auto-redirect to menu or dashboard
+```
+
+### 10.3 API Endpoints Called
+
+**From checkout-payment.php:**
+1. `POST /payments/intent` - Create payment intent/record
+2. `POST /orders` - Create order (from menu) or `PUT /orders/{orderId}` - Update order (from dashboard)
+
+### 10.4 Payment Record Schema
+
+```json
+{
+  "paymentId": "UUID",
+  "orderId": "UUID",
+  "amount": 29.50,
+  "paymentMethod": "card|cash",
+  "paymentStatus": "pending|completed|failed",
+  "cardLastFour": "1234" (for card payments),
+  "amountReceived": 30.00 (for cash payments),
+  "change": 0.50 (for cash payments),
+  "notes": "Staff notes",
+  "createdAt": "ISO-timestamp",
+  "updatedAt": "ISO-timestamp"
+}
+```
 
 ---
 
@@ -489,6 +560,7 @@ The shopping cart is **only functional** when accessed with the `?table` query p
 
 | Date | Version | Changes |
 |------|---------|---------|
+| 2026-01-27 | 1.3 | Added Payment System (Section 10) - Payment processor page, methods, and flow |
 | 2025-01-25 | 1.1 | Added Menu System requirements (Section 9) - Query parameter rules for cart and "Add to Cart" button visibility |
 | 2025-01-23 | 1.0 | Initial requirements document |
 

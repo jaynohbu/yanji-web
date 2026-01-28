@@ -499,7 +499,7 @@ class OrderDashboard {
         // Handle platform-specific logic
         if (platform === 'web') {
             // Web orders don't need customer info
-            customerNameInput.value = 'assistant';
+            customerNameInput.value = 'staff';
             customerNameInput.required = false;
             customerNameInput.style.opacity = '0.5';
             customerNameInput.style.pointerEvents = 'none';
@@ -519,7 +519,7 @@ class OrderDashboard {
             customerPhoneInput.style.pointerEvents = 'auto';
 
             // Clear auto-filled values if user switches platforms
-            if (customerNameInput.value === 'assistant') {
+            if (customerNameInput.value === 'staff') {
                 customerNameInput.value = '';
             }
             if (customerPhoneInput.value === '+447910754793') {
@@ -670,7 +670,138 @@ class OrderDashboard {
 
         document.getElementById('paymentAmount').value = total.toFixed(2);
         document.getElementById('paymentAmount').dataset.orderId = orderId;
+        document.getElementById('paymentMethodSection').style.display = 'block';
+        document.getElementById('cashPaymentForm').style.display = 'none';
         document.getElementById('paymentModal').classList.add('active');
+    }
+
+    selectPaymentMethod(method) {
+        if (method === 'credit_card') {
+            // Redirect to checkout payment page
+            this.handlePaymentRedirect();
+        } else if (method === 'cash') {
+            // Show cash payment form
+            document.getElementById('paymentMethodSection').style.display = 'none';
+            document.getElementById('cashPaymentForm').style.display = 'block';
+            const amount = document.getElementById('paymentAmount').value;
+            document.getElementById('cashOrderTotal').value = amount;
+            document.getElementById('cashAmountReceived').value = '';
+            document.getElementById('changeDisplay').style.display = 'none';
+        }
+    }
+
+    cancelPaymentMethod() {
+        // Go back to method selection
+        document.getElementById('paymentMethodSection').style.display = 'block';
+        document.getElementById('cashPaymentForm').style.display = 'none';
+    }
+
+    calculateChange() {
+        const totalAmount = parseFloat(document.getElementById('cashOrderTotal').value) || 0;
+        const amountReceived = parseFloat(document.getElementById('cashAmountReceived').value) || 0;
+        
+        if (amountReceived > 0) {
+            const change = amountReceived - totalAmount;
+            document.getElementById('changeAmount').value = change.toFixed(2);
+            document.getElementById('changeDisplay').style.display = 'block';
+            
+            // Change color based on whether overpayment or exact
+            if (change < 0) {
+                document.getElementById('changeAmount').style.color = '#e74c3c'; // Red for insufficient
+            } else {
+                document.getElementById('changeAmount').style.color = '#27ae60'; // Green for valid
+            }
+        } else {
+            document.getElementById('changeDisplay').style.display = 'none';
+        }
+    }
+
+    async processCashPayment(event) {
+        event.preventDefault();
+
+        const orderId = document.getElementById('paymentAmount').dataset.orderId;
+        const totalAmount = parseFloat(document.getElementById('cashOrderTotal').value);
+        const amountReceived = parseFloat(document.getElementById('cashAmountReceived').value);
+        const staffNotes = document.getElementById('staffNotes').value;
+
+        if (!amountReceived || amountReceived < totalAmount) {
+            this.showToast('Amount received must be at least £' + totalAmount.toFixed(2), 'error');
+            return;
+        }
+
+        const change = amountReceived - totalAmount;
+        const API_BASE = window.API_BASE || window.YANJI_CONFIG?.API_BASE || 'https://yanji.tunesbasis.com';
+
+        try {
+            // Create payment record
+            const paymentResponse = await fetch(`${API_BASE}/payments/intent`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    orderId: orderId,
+                    amount: totalAmount,
+                    paymentMethod: 'cash',
+                    amountReceived: amountReceived,
+                    change: change,
+                    notes: staffNotes
+                })
+            });
+
+            if (!paymentResponse.ok) {
+                throw new Error('Failed to create payment record');
+            }
+
+            const payment = await paymentResponse.json();
+
+            // Update order with payment status
+            const updateResponse = await fetch(`${API_BASE}/orders/${orderId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    paymentStatus: 'completed',
+                    paymentMethod: 'cash',
+                    paymentId: payment.paymentId || payment.id
+                })
+            });
+
+            if (!updateResponse.ok) {
+                throw new Error('Failed to update order payment status');
+            }
+
+            // Show success message with change
+            this.showToast(`✅ Cash payment processed successfully. Change: £${change.toFixed(2)}`, 'success');
+            
+            // Close modal and refresh orders
+            closeModal('paymentModal');
+            
+            // Wait a moment then reload orders
+            setTimeout(() => {
+                this.loadOrders();
+            }, 500);
+
+        } catch (error) {
+            this.showToast('❌ Payment processing failed: ' + error.message, 'error');
+        }
+    }
+
+    async handlePaymentRedirect() {
+        const amount = parseFloat(document.getElementById('paymentAmount').value);
+        const orderId = document.getElementById('paymentAmount').dataset.orderId;
+
+        if (!amount || !orderId) {
+            this.showToast('Invalid payment information', 'error');
+            return;
+        }
+
+        // Store payment data securely in sessionStorage (not in URL)
+        sessionStorage.setItem('paymentData', JSON.stringify({
+            source: 'dashboard',
+            orderId: orderId,
+            totalAmount: amount
+        }));
+
+        // Redirect to payment processor page (clean URL)
+        window.location.href = 'checkout-payment.php';
     }
 
     async handlePayment(e) {
