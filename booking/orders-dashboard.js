@@ -65,6 +65,48 @@ class OrderDashboard {
         });
     }
 
+    // Helper function to safely extract price from item (works with objects and strings)
+    getItemPrice(item) {
+        if (!item) return 0;
+        
+        // If it's an object with price property
+        if (typeof item === 'object' && item.price !== undefined) {
+            return parseFloat(item.price) || 0;
+        }
+        
+        // If it's a string like "Item Name: £14.99", extract the price
+        if (typeof item === 'string') {
+            const match = item.match(/£?([0-9.]+)$/);
+            return match ? parseFloat(match[1]) : 0;
+        }
+        
+        return 0;
+    }
+
+    // Helper function to get item quantity
+    getItemQuantity(item) {
+        if (!item) return 1;
+        
+        // If it's an object with quantity property
+        if (typeof item === 'object' && item.quantity !== undefined) {
+            return item.quantity || 1;
+        }
+        
+        // Strings are always quantity 1
+        return 1;
+    }
+
+    // Calculate subtotal from items array
+    calculateSubtotal(items) {
+        if (!Array.isArray(items)) return 0;
+        
+        return items.reduce((sum, item) => {
+            const price = this.getItemPrice(item);
+            const qty = this.getItemQuantity(item);
+            return sum + (price * qty);
+        }, 0);
+    }
+
     async loadMenuItems() {
         try {
             const response = await fetch(`${this.apiBaseUrl}/menu`);
@@ -344,13 +386,7 @@ class OrderDashboard {
                                 order.status === 'cancelled' ? 'pending' : 'pending';
 
         const createdDate = order.createdAt ? new Date(order.createdAt).toLocaleString() : 'N/A';
-        const subtotal = Array.isArray(order.items) 
-            ? order.items.reduce((sum, item) => {
-                const price = typeof item === 'string' ? 0 : (parseFloat(item.price) || 0);
-                const qty = typeof item === 'string' ? 1 : (item.quantity || 1);
-                return sum + (price * qty);
-            }, 0)
-            : 0;
+        const subtotal = this.calculateSubtotal(order.items);
         const serviceCharge = subtotal * 0.15;
         const vat = (subtotal + serviceCharge) * 0.20;
         const total = subtotal + serviceCharge + vat;
@@ -757,13 +793,7 @@ class OrderDashboard {
         if (!order || !order.items) return;
 
         // Calculate totals
-        const subtotal = Array.isArray(order.items)
-            ? order.items.reduce((sum, item) => {
-                const price = typeof item === 'string' ? 0 : (parseFloat(item.price) || 0);
-                const qty = typeof item === 'string' ? 1 : (item.quantity || 1);
-                return sum + (price * qty);
-            }, 0)
-            : 0;
+        const subtotal = this.calculateSubtotal(order.items);
         const serviceCharge = subtotal * 0.15;
         const vat = (subtotal + serviceCharge) * 0.20;
         const total = subtotal + serviceCharge + vat;
