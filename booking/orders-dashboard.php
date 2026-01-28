@@ -327,6 +327,38 @@
       color: #fff;
     }
 
+    /* Confirmation Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal.active {
+      display: flex;
+    }
+    .modal-content {
+      background: #252542;
+      border-radius: 12px;
+      padding: 30px;
+      width: 90%;
+    }
+    .modal-content h2 {
+      margin-bottom: 20px;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
     /* Form */
     .form-group {
       margin-bottom: 20px;
@@ -624,6 +656,18 @@
 
   <!-- Toast Notification -->
   <div class="toast" id="toast"></div>
+
+  <!-- Confirmation Modal -->
+  <div class="modal" id="confirm-modal">
+    <div class="modal-content" style="max-width: 400px; text-align: center;">
+      <h2 id="confirm-title" style="margin-bottom: 15px;">Confirm</h2>
+      <p id="confirm-message" style="color: #ccc; margin-bottom: 25px;"></p>
+      <div class="modal-actions" style="justify-content: center;">
+        <button class="btn btn-secondary" id="confirm-cancel-btn">Cancel</button>
+        <button class="btn btn-danger" id="confirm-ok-btn">Confirm</button>
+      </div>
+    </div>
+  </div>
 
   <script src="./orders-dashboard.js"></script>
 </body>

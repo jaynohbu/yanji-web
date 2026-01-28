@@ -619,6 +619,40 @@ class OrderDashboard {
         this.openOrderModal(orderId);
     }
 
+    async showConfirm(message, title = 'Confirm') {
+        return new Promise((resolve) => {
+            const modal = document.getElementById('confirm-modal');
+            const titleEl = document.getElementById('confirm-title');
+            const messageEl = document.getElementById('confirm-message');
+            const okBtn = document.getElementById('confirm-ok-btn');
+            const cancelBtn = document.getElementById('confirm-cancel-btn');
+
+            titleEl.textContent = title;
+            messageEl.textContent = message;
+
+            modal.classList.add('active');
+
+            const cleanup = () => {
+                modal.classList.remove('active');
+                okBtn.removeEventListener('click', onOk);
+                cancelBtn.removeEventListener('click', onCancel);
+            };
+
+            const onOk = () => {
+                cleanup();
+                resolve(true);
+            };
+
+            const onCancel = () => {
+                cleanup();
+                resolve(false);
+            };
+
+            okBtn.addEventListener('click', onOk);
+            cancelBtn.addEventListener('click', onCancel);
+        });
+    }
+
     async updateOrderStatus(orderId, status) {
         const statusLabels = {
             pending: 'Pending',
@@ -629,7 +663,7 @@ class OrderDashboard {
         };
 
         const confirm_msg = `Mark order as ${statusLabels[status]}?`;
-        if (!confirm(confirm_msg)) return;
+        if (!(await this.showConfirm(confirm_msg, 'Update Order Status'))) return;
 
         try {
             const response = await fetch(`${this.apiBaseUrl}/orders/${orderId}`, {
@@ -649,7 +683,7 @@ class OrderDashboard {
     }
 
     async completeOrder(orderId) {
-        if (!confirm('Mark this order as completed?')) return;
+        if (!(await this.showConfirm('Mark this order as completed?', 'Complete Order'))) return;
 
         try {
             const response = await fetch(`${this.apiBaseUrl}/orders/${orderId}`, {
@@ -669,7 +703,7 @@ class OrderDashboard {
     }
 
     async cancelOrder(orderId) {
-        if (!confirm('Cancel this order?')) return;
+        if (!(await this.showConfirm('Cancel this order?', 'Cancel Order'))) return;
 
         try {
             const response = await fetch(`${this.apiBaseUrl}/orders/${orderId}`, {
