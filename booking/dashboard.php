@@ -522,6 +522,7 @@
           <a href="admin.php" data-i18n="nav.settings">Settings</a>
           <a href="dashboard.php" class="active" data-i18n="nav.dashboard">Dashboard</a>
           <a href="reservation.php" data-i18n="nav.reservation">Reservation</a>
+          <a href="orders-dashboard.php" data-i18n="nav.orders">Orders</a>
         </nav>
       </div>
     </header>
@@ -659,7 +660,8 @@
         nav: {
           settings: 'Settings',
           dashboard: 'Dashboard',
-          reservation: 'Reservation'
+          reservation: 'Reservation',
+          orders: 'Orders'
         },
         dashboard: {
           today: 'Today',
@@ -719,7 +721,8 @@
         nav: {
           settings: '설정',
           dashboard: '대시보드',
-          reservation: '예약'
+          reservation: '예약',
+          orders: '주문'
         },
         dashboard: {
           today: '오늘',

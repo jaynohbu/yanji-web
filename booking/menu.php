@@ -213,15 +213,15 @@
     }
     
     .menu-item-name {
-      font-size: 16px;
-      font-weight: 300;
-      color: #333;
+      font-size: 20px;
+      font-weight: 500;
+      color: #1a1a1a;
       margin-bottom: 8px;
     }
     .menu-item-price {
-      font-size: 18px;
-      font-weight: 400;
-      color: #333;
+      font-size: 22px;
+      font-weight: 600;
+      color: #ff6b35;
       margin-bottom: 12px;
     }
     .menu-item-buttons {
@@ -498,6 +498,11 @@
       font-weight: 600;
       color: #333;
     }
+    .summary-row.service {
+      color: #ff6b35;
+      font-size: 12px;
+      font-weight: 500;
+    }
     .summary-row.tax {
       color: #666;
       font-size: 12px;
@@ -582,8 +587,8 @@
       background: #7dd4c2;
     }
     .menu-item-desc {
-      font-size: 13px;
-      color: #666;
+      font-size: 15px;
+      color: #555;
       margin: 5px 0;
     }
   </style>
@@ -879,7 +884,7 @@
 
       // Call backend API directly
       const token = localStorage.getItem('yanji-access-token');
-      const apiUrl = 'https://yanji.tunesbasis.com/menu/items/' + encodeURIComponent(itemId);
+      const apiUrl = `${API_BASE}/menu/items/${encodeURIComponent(itemId)}`;
       
       fetch(apiUrl, {
         method: 'PATCH',
@@ -1005,15 +1010,22 @@
       });
       itemsHtml += '</ul>';
 
+      const SERVICE_CHARGE_RATE = 0.15; // 15% service charge
       const VAT_RATE = 0.20; // 20% VAT in London
-      const vat = subtotal * VAT_RATE;
-      const total = subtotal + vat;
+      const serviceCharge = subtotal * SERVICE_CHARGE_RATE;
+      const subtotalWithService = subtotal + serviceCharge;
+      const vat = subtotalWithService * VAT_RATE;
+      const total = subtotalWithService + vat;
 
       const summaryHtml = `
         <div class="cart-summary">
           <div class="summary-row">
             <span>Subtotal:</span>
             <span>£${subtotal.toFixed(2)}</span>
+          </div>
+          <div class="summary-row service">
+            <span>Service Charge (15%):</span>
+            <span>£${serviceCharge.toFixed(2)}</span>
           </div>
           <div class="summary-row tax">
             <span>VAT (20% - London):</span>
@@ -1067,13 +1079,24 @@
       msgDiv.innerHTML = '';
 
       try {
+        // Calculate total with service charge and VAT
+        let subtotal = 0;
+        cart.forEach(item => {
+          subtotal += item.price * item.quantity;
+        });
+        const serviceCharge = subtotal * 0.15;
+        const subtotalWithService = subtotal + serviceCharge;
+        const vat = subtotalWithService * 0.20;
+        const totalAmount = subtotalWithService + vat;
+
         const orderData = {
           tableNumber: tableNumber,
           items: cart,
           comments: window.orderComments || '',
+          totalAmount: Math.round(totalAmount * 100) / 100, // Round to 2 decimal places
         };
 
-        const response = await fetch('https://yanji.tunesbasis.com/orders', {
+        const response = await fetch(`${API_BASE}/orders`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
