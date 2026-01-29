@@ -813,7 +813,7 @@ class OrderDashboard {
         }
     }
 
-    openRefundModal(orderId) {
+    openRefundModal(orderId, paymentId) {
         const order = this.orders.find(o => o.orderId === orderId);
         if (!order) return;
 
@@ -833,10 +833,11 @@ class OrderDashboard {
             vat = (subtotal + serviceCharge) * 0.20;
         }
 
-        console.log('Refund calc:', {subtotal, serviceCharge, vat, total});
+        console.log('Refund calc:', {subtotal, serviceCharge, vat, total, paymentId});
 
-        // Store orderId in hidden field for form submission
+        // Store orderId and paymentId for form submission
         this.refundingOrderId = orderId;
+        this.refundingPaymentId = paymentId || null; // Will be null for cash-only, populated for card payments
 
         // Update breakdowns
         document.getElementById('refundBreakdownSubtotal').textContent = subtotal.toFixed(2);
@@ -907,6 +908,7 @@ class OrderDashboard {
         const refundAmount = parseFloat(document.getElementById('cashRefundAmount').value);
         const notes = document.getElementById('refundStaffNotes').value;
         const orderId = this.refundingOrderId;
+        const paymentId = this.refundingPaymentId; // Must be set when opening refund modal
 
         if (!orderId) {
             this.showToast('Error: Order ID not found', 'error');
@@ -919,25 +921,48 @@ class OrderDashboard {
         }
 
         try {
-            // Update order with refund details
-            const response = await fetch(`${this.apiBaseUrl}/orders/${orderId}`, {
+            // Convert £ amount to cents for API
+            const refundAmountInCents = Math.round(refundAmount * 100);
+
+            // Call refund endpoint if paymentId is available (card payment)
+            if (paymentId) {
+                const refundResponse = await fetch(`${this.apiBaseUrl}/payments/${paymentId}/refund`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        amount: refundAmountInCents,
+                        reason: notes || 'Cash refund from order screen'
+                    })
+                });
+
+                if (!refundResponse.ok) {
+                    const errorData = await refundResponse.json();
+                    throw new Error(errorData.message || 'Failed to process payment refund');
+                }
+
+                const refundData = await refundResponse.json();
+                console.log('Payment refund response:', refundData);
+            }
+
+            // Update order with refund details (for history and audit trail)
+            const orderResponse = await fetch(`${this.apiBaseUrl}/orders/${orderId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     status: 'cancelled',
                     refundAmount: refundAmount,
-                    refundMethod: 'cash',
+                    refundMethod: paymentId ? 'card' : 'cash',
                     refundNotes: notes
                 })
             });
 
-            if (!response.ok) throw new Error('Failed to process refund');
+            if (!orderResponse.ok) throw new Error('Failed to update order');
 
-            this.showToast(`✅ Cash refund processed. Amount: £${refundAmount.toFixed(2)}`, 'success');
+            this.showToast(`✅ Refund processed. Amount: £${refundAmount.toFixed(2)}`, 'success');
             this.closeModal('refundModal');
             this.loadOrders();
         } catch (error) {
-            console.error('Error processing cash refund:', error);
+            console.error('Error processing refund:', error);
             this.showToast('Error processing refund: ' + error.message, 'error');
         }
     }

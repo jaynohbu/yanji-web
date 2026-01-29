@@ -110,21 +110,25 @@ class PaymentDashboard {
                 const tableName = this.getTableName(tableNumber);
                 
                 // Calculate remaining balance if refunded
+                // Note: amount and refundAmount are in cents from the API
                 let remainingBalance = 0;
+                const amountInPounds = payment.amount ? payment.amount / 100 : 0;
+                const refundAmountInPounds = payment.refundAmount ? payment.refundAmount / 100 : 0;
+                
                 if (payment.status === 'refunded' && payment.refundAmount) {
-                    remainingBalance = Math.max(0, (payment.amount || 0) - (payment.refundAmount || 0));
+                    remainingBalance = Math.max(0, amountInPounds - refundAmountInPounds);
                 }
                 
                 return {
                     id: payment.paymentId || payment.id,
                     orderId: payment.orderId || 'N/A',
-                    amount: payment.amount ? Math.round(payment.amount / 100) : 0,
+                    amount: amountInPounds,
                     status: payment.status || 'pending',
                     method: payment.method || payment.sourceId || 'Unknown',
                     createdAt: payment.createdAt || payment.date,
                     squarePaymentId: payment.squarePaymentId || '',
                     notes: payment.notes || '',
-                    refundAmount: payment.refundAmount || 0,
+                    refundAmount: refundAmountInPounds,
                     remainingBalance: remainingBalance,
                     customerName: order.customerName || 'Guest',
                     tableNumber: tableNumber,
@@ -224,6 +228,7 @@ class PaymentDashboard {
 Customer: ${payment.customerName || 'Guest'}
 Table: ${payment.tableName}
 Amount: £${this.formatAmount(payment.amount || 0)}
+${payment.status === 'refunded' ? `Refunded: £${this.formatAmount(payment.refundAmount || 0)}` : ''}
 ${payment.status === 'refunded' && payment.remainingBalance > 0 ? `Remaining Balance: £${this.formatAmount(payment.remainingBalance)}` : ''}
 Status: ${payment.status || 'Pending'}
 Method: ${payment.method || 'Unknown'}
