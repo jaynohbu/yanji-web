@@ -1653,6 +1653,12 @@
 
     function closeQuickReservation() {
       document.getElementById('quick-res-modal').classList.remove('active');
+      // Clear all form fields
+      document.getElementById('quick-name').value = '';
+      document.getElementById('quick-phone').value = '';
+      document.getElementById('quick-guests').value = '2';
+      document.getElementById('quick-table').value = '';
+      document.getElementById('quick-time').value = '';
     }
 
     async function saveQuickReservation() {
