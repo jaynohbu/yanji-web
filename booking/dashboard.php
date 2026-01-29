@@ -920,11 +920,35 @@
       }
     }
 
+    // Request debouncing to prevent rate limiting
+    let lastFetchTime = {};
+    const FETCH_DEBOUNCE_MS = 60000; // Wait at least 60 seconds (1 minute) between fetches for same date
+
     async function fetchReservations(date) {
       try {
+        // Check if we recently fetched this date
+        const now = Date.now();
+        if (lastFetchTime[date] && now - lastFetchTime[date] < FETCH_DEBOUNCE_MS) {
+          console.log(`Debouncing fetch for ${date} (fetched ${now - lastFetchTime[date]}ms ago)`);
+          return;
+        }
+
         const res = await fetch(`${API_BASE}/reservations?date=${date}`);
-        if (!res.ok) throw new Error('Failed to fetch reservations');
+        
+        if (!res.ok) {
+          if (res.status === 429) {
+            console.warn('Rate limited (429). Waiting 5 seconds before retry...');
+            showToast('Server busy, retrying...', true);
+            // Don't update lastFetchTime to allow retry
+            return;
+          }
+          const errorData = await res.text();
+          throw new Error(`Failed to fetch reservations: ${res.status} - ${errorData}`);
+        }
+        
         reservations = await res.json();
+        lastFetchTime[date] = Date.now();
+        console.log(`Fetched ${reservations.length} reservations for ${date}`);
       } catch (e) {
         console.error('Failed to fetch reservations:', e);
         reservations = [];
@@ -936,7 +960,11 @@
         const res = await fetch(`${API_BASE}/reservations/${resId}/seat`, {
           method: 'POST'
         });
-        if (!res.ok) throw new Error('Failed to seat reservation');
+        if (!res.ok) {
+          const errorData = await res.text();
+          console.error('API Error Response:', errorData);
+          throw new Error(`Failed to seat reservation: ${res.status} - ${errorData}`);
+        }
         return true;
       } catch (e) {
         console.error('Failed to seat reservation:', e);
@@ -949,7 +977,11 @@
         const res = await fetch(`${API_BASE}/reservations/${resId}/complete`, {
           method: 'POST'
         });
-        if (!res.ok) throw new Error('Failed to complete reservation');
+        if (!res.ok) {
+          const errorData = await res.text();
+          console.error('API Error Response:', errorData);
+          throw new Error(`Failed to complete reservation: ${res.status} - ${errorData}`);
+        }
         return true;
       } catch (e) {
         console.error('Failed to complete reservation:', e);
@@ -962,7 +994,11 @@
         const res = await fetch(`${API_BASE}/reservations/${resId}`, {
           method: 'DELETE'
         });
-        if (!res.ok) throw new Error('Failed to cancel reservation');
+        if (!res.ok) {
+          const errorData = await res.text();
+          console.error('API Error Response:', errorData);
+          throw new Error(`Failed to cancel reservation: ${res.status} - ${errorData}`);
+        }
         return true;
       } catch (e) {
         console.error('Failed to cancel reservation:', e);
@@ -977,7 +1013,11 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
         });
-        if (!res.ok) throw new Error('Failed to create reservation');
+        if (!res.ok) {
+          const errorData = await res.text();
+          console.error('API Error Response:', errorData);
+          throw new Error(`Failed to create reservation: ${res.status} - ${errorData}`);
+        }
         return await res.json();
       } catch (e) {
         console.error('Failed to create reservation:', e);
@@ -1622,8 +1662,18 @@
       const tableId = document.getElementById('quick-table').value;
       const startTime = document.getElementById('quick-time').value;
 
-      if (!name || !startTime) {
-        showToast('Please fill in required fields', true);
+      if (!name || !startTime || !tableId) {
+        showToast('Please fill in all required fields', true);
+        return;
+      }
+
+      if (isNaN(guests) || guests < 1 || guests > 10) {
+        showToast('Guest count must be between 1 and 10', true);
+        return;
+      }
+
+      if (!phone) {
+        showToast('Phone number is required', true);
         return;
       }
 
@@ -1743,11 +1793,21 @@
     }
     init();
 
-    // Auto refresh every 30 seconds
+    // Auto refresh every 60 seconds with rate limit handling
+    let refreshInProgress = false;
     setInterval(async () => {
-      await fetchReservations(selectedDate);
-      renderAll();
-    }, 30000);
+      if (refreshInProgress) {
+        console.log('Refresh already in progress, skipping...');
+        return;
+      }
+      refreshInProgress = true;
+      try {
+        await fetchReservations(selectedDate);
+        renderAll();
+      } finally {
+        refreshInProgress = false;
+      }
+    }, 60000);
   </script>
 </body>
 </html>

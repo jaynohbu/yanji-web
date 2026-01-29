@@ -987,13 +987,20 @@
     // ==================== API Functions ====================
     async function fetchConfig() {
       try {
+        console.log('🔵 Fetching config from:', `${API_BASE}/config`);
         const res = await fetch(`${API_BASE}/config`);
-        if (!res.ok) throw new Error('Failed to fetch config');
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}: Failed to fetch config`);
+        }
         const data = await res.json();
+        console.log('✅ Config data received:', data);
 
         // Load tables
-        if (data.tables && data.tables.length > 0) {
+        if (data.tables && Array.isArray(data.tables) && data.tables.length > 0) {
+          console.log(`✅ Loaded ${data.tables.length} tables`, data.tables);
           tables = data.tables;
+        } else {
+          console.warn('⚠️ No tables found in config response', data);
         }
 
         // Load operation hours
@@ -1012,8 +1019,9 @@
         renderOverrides();
         renderBlocks();
         showToast('Config loaded');
+        console.log('✅ renderTables() called, tables.length:', tables.length);
       } catch (e) {
-        console.error('Failed to fetch config:', e);
+        console.error('❌ Failed to fetch config:', e);
         showToast('Failed to load config - using defaults', true);
       }
     }
@@ -1198,7 +1206,15 @@
     // ==================== Render Functions ====================
     function renderTables() {
       const tbody = document.getElementById('tables-body');
+      console.log('📊 renderTables called with tables.length:', tables.length);
+      console.log('📊 tables data:', tables);
       tbody.innerHTML = '';
+
+      if (!tables || tables.length === 0) {
+        console.warn('⚠️ No tables to render');
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #888;">No tables configured</td></tr>';
+        return;
+      }
 
       tables.forEach(table => {
         const displayName = currentLang === 'ko' ? (table.nameKo || table.name) : table.name;
@@ -1235,6 +1251,7 @@
           });
         }
       });
+      console.log('✅ renderTables completed, rendered', tables.length, 'tables');
     }
 
     function renderOverrides() {
