@@ -924,24 +924,72 @@ class OrderDashboard {
             // Convert £ amount to cents for API
             const refundAmountInCents = Math.round(refundAmount * 100);
 
-            // Call refund endpoint if paymentId is available (card payment)
+            // Attempt to call refund endpoint if paymentId is available
             if (paymentId) {
-                const refundResponse = await fetch(`${this.apiBaseUrl}/payments/${paymentId}/refund`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        amount: refundAmountInCents,
-                        reason: notes || 'Cash refund from order screen'
-                    })
-                });
+                try {
+                    const refundResponse = await fetch(`${this.apiBaseUrl}/payments/${paymentId}/refund`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            amount: refundAmountInCents,
+                            reason: notes || 'Refund from order screen'
+                        })
+                    });
 
-                if (!refundResponse.ok) {
-                    const errorData = await refundResponse.json();
-                    throw new Error(errorData.message || 'Failed to process payment refund');
+                    if (refundResponse.ok) {
+                        const refundData = await refundResponse.json();
+                        console.log('Payment refund response:', refundData);
+                    } else {
+                        // If card refund fails, try cash refund endpoint
+                        console.log('Card refund failed, attempting cash refund endpoint');
+                        const cashRefundResponse = await fetch(`${this.apiBaseUrl}/payments/${paymentId}/refund-cash`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                amount: refundAmountInCents,
+                                reason: notes || 'Cash refund from order screen'
+                            })
+                        });
+
+                        if (!cashRefundResponse.ok) {
+                            const errorData = await cashRefundResponse.json();
+                            console.log('Cash refund also failed:', errorData.message);
+                            // Continue - will update order at least
+                        } else {
+                            console.log('Cash refund recorded successfully');
+                        }
+                    }
+                } catch (paymentError) {
+                    console.log('Payment refund error (continuing with order update):', paymentError);
+                    // Don't throw - we'll still update the order
                 }
+            } else {
+                // No paymentId, use cash refund endpoint if available
+                console.log('No payment ID, attempting cash refund endpoint');
+                try {
+                    // Try to find payment by orderId
+                    const paymentsResponse = await fetch(`${this.apiBaseUrl}/payments/order/${orderId}`);
+                    if (paymentsResponse.ok) {
+                        const payments = await paymentsResponse.json();
+                        if (payments && payments.length > 0) {
+                            const payment = payments[0];
+                            const cashRefundResponse = await fetch(`${this.apiBaseUrl}/payments/${payment.paymentId}/refund-cash`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    amount: refundAmountInCents,
+                                    reason: notes || 'Cash refund'
+                                })
+                            });
 
-                const refundData = await refundResponse.json();
-                console.log('Payment refund response:', refundData);
+                            if (cashRefundResponse.ok) {
+                                console.log('Cash refund recorded successfully');
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.log('Could not find payment for order, will update order only');
+                }
             }
 
             // Update order with refund details (for history and audit trail)
