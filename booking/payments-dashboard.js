@@ -41,12 +41,33 @@ class PaymentDashboard {
         });
     }
 
+    // Helper function to get table display name
+    getTableName(tableNumber) {
+        if (!tableNumber || tableNumber === 'N/A') return 'N/A';
+        
+        const num = parseInt(tableNumber);
+        if (isNaN(num)) return String(tableNumber);
+        
+        const base = Math.floor(num / 100);
+        const suffix = num % 100;
+        
+        if (base > 0) {
+            if (suffix === 1) return base + 'A';
+            if (suffix === 2) return base + 'B';
+            if (suffix === 3) return base + 'C';
+            if (suffix === 4) return base + 'D';
+        }
+        
+        return String(tableNumber);
+    }
+
     async loadPayments() {
         const loadingIndicator = document.getElementById('loadingIndicator');
         loadingIndicator.style.display = 'block';
 
         try {
-            const response = await fetch(`${this.apiBaseUrl}/payments`, {
+            // Load both payments and orders
+            const paymentsResponse = await fetch(`${this.apiBaseUrl}/payments`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -54,28 +75,62 @@ class PaymentDashboard {
                 }
             });
 
-            if (!response.ok) {
-                if (response.status === 404) {
+            const ordersResponse = await fetch(`${this.apiBaseUrl}/orders`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!paymentsResponse.ok || !ordersResponse.ok) {
+                if (paymentsResponse.status === 404) {
                     this.showEmptyState();
                     return;
                 }
-                throw new Error(`API error: ${response.status}`);
+                throw new Error(`API error: ${paymentsResponse.status || ordersResponse.status}`);
             }
 
-            const data = await response.json();
-            const payments = Array.isArray(data) ? data : (data.data || data.payments || []);
+            const paymentsData = await paymentsResponse.json();
+            const ordersData = await ordersResponse.json();
             
-            // Transform payment records to dashboard format
-            this.payments = payments.map(payment => ({
-                id: payment.paymentId || payment.id,
-                orderId: payment.orderId || 'N/A',
-                amount: payment.amount ? Math.round(payment.amount / 100) : 0,
-                status: payment.status || 'pending',
-                method: payment.method || payment.sourceId || 'Unknown',
-                createdAt: payment.createdAt || payment.date,
-                squarePaymentId: payment.squarePaymentId || '',
-                notes: payment.notes || ''
-            })).filter(p => p.id);
+            const payments = Array.isArray(paymentsData) ? paymentsData : (paymentsData.data || paymentsData.payments || []);
+            const orders = Array.isArray(ordersData) ? ordersData : (ordersData.data || ordersData.orders || []);
+            
+            // Create a map of orders by orderId for quick lookup
+            const ordersMap = {};
+            orders.forEach(order => {
+                ordersMap[order.orderId] = order;
+            });
+            
+            // Transform payment records to dashboard format and enrich with order data
+            this.payments = payments.map(payment => {
+                const order = ordersMap[payment.orderId] || {};
+                const tableNumber = order.tableNumber || 'N/A';
+                const tableName = this.getTableName(tableNumber);
+                
+                // Calculate remaining balance if refunded
+                let remainingBalance = 0;
+                if (payment.status === 'refunded' && payment.refundAmount) {
+                    remainingBalance = Math.max(0, (payment.amount || 0) - (payment.refundAmount || 0));
+                }
+                
+                return {
+                    id: payment.paymentId || payment.id,
+                    orderId: payment.orderId || 'N/A',
+                    amount: payment.amount ? Math.round(payment.amount / 100) : 0,
+                    status: payment.status || 'pending',
+                    method: payment.method || payment.sourceId || 'Unknown',
+                    createdAt: payment.createdAt || payment.date,
+                    squarePaymentId: payment.squarePaymentId || '',
+                    notes: payment.notes || '',
+                    refundAmount: payment.refundAmount || 0,
+                    remainingBalance: remainingBalance,
+                    customerName: order.customerName || 'Guest',
+                    tableNumber: tableNumber,
+                    tableName: tableName
+                };
+            }).filter(p => p.id);
             
             this.applyFilters();
             this.updateSummary();
@@ -123,8 +178,16 @@ class PaymentDashboard {
 
         paymentsBody.innerHTML = this.filteredPayments.map(payment => `
             <tr>
-                <td class="payment-id">${this.escapeHtml(payment.id || 'N/A')}</td>
-                <td class="payment-amount">$${this.formatAmount(payment.amount || 0)}</td>
+                <td class="payment-customer">
+                    <div>${this.escapeHtml(payment.customerName || 'Guest')}</div>
+                    <div style="font-size: 12px; color: #888;">Table ${this.escapeHtml(payment.tableName)}</div>
+                </td>
+                <td class="payment-amount">£${this.formatAmount(payment.amount || 0)}</td>
+                ${payment.status === 'refunded' && payment.remainingBalance > 0 ? `
+                    <td class="payment-balance">£${this.formatAmount(payment.remainingBalance)}</td>
+                ` : `
+                    <td class="payment-balance">-</td>
+                `}
                 <td>
                     <span class="payment-status status-${payment.status?.toLowerCase() || 'pending'}">
                         ${payment.status || 'Pending'}
@@ -158,12 +221,15 @@ class PaymentDashboard {
         if (!payment) return;
 
         const details = `
-Payment ID: ${payment.id}
-Amount: $${this.formatAmount(payment.amount || 0)}
+Customer: ${payment.customerName || 'Guest'}
+Table: ${payment.tableName}
+Amount: £${this.formatAmount(payment.amount || 0)}
+${payment.status === 'refunded' && payment.remainingBalance > 0 ? `Remaining Balance: £${this.formatAmount(payment.remainingBalance)}` : ''}
 Status: ${payment.status || 'Pending'}
 Method: ${payment.method || 'Unknown'}
 Date: ${this.formatDate(payment.createdAt || payment.date)}
 Order ID: ${payment.orderId || 'N/A'}
+Payment ID: ${payment.id}
 
 ${payment.notes ? `Notes: ${payment.notes}` : ''}
         `.trim();

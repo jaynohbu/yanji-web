@@ -415,8 +415,9 @@
     <table class="payments-table" id="paymentsTable" style="display: none;">
       <thead>
         <tr>
-          <th>Payment ID</th>
+          <th>Paid By</th>
           <th>Amount</th>
+          <th>Remaining Balance</th>
           <th>Status</th>
           <th>Method</th>
           <th>Date</th>
